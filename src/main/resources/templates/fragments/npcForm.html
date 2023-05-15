@@ -7,43 +7,59 @@
 <body>
 <div th:fragment="npcForm">
     <form id="npcForm" th:action="${formAction}" th:method="${formMethod}" th:object="${npc}">
-        <input type="text" th:field="*{name}" placeholder="Name" />
+        <label for="name">Name</label>
+        <input type="text" id="name" th:field="*{npc.name}" th:value=${npc.name}" required>Name</input>
 
-        <select id="species" th:field="*{species}">
-            <!-- Species options populated here by JavaScript -->
+        <label for="species">Species</label>
+        <select id="species" th:field="*{npc.species}" required>
+            <option th:each="species : ${T(com.npcvillagers.npcvillage.models.enums.Species).values()}"
+                    th:value="${species.name()}" th:text="${species.getDisplayName()}">Species</option>
         </select>
 
-        <select id="subspecies" th:field="*{subspecies}">
+        <label for="subspecies">Subspecies</label>
+        <select id="subspecies" th:field="*{npc.subspecies}" required>
             <!-- Subspecies options populated here by JavaScript -->
         </select>
 
-        <select th:field="*{gender}">
+        <label for="gender">Gender</label>
+        <select id="gender" th:field="*{npc.gender}" required>
             <option th:each="gender : ${T(com.npcvillagers.npcvillage.models.enums.Gender).values()}"
-                    th:value="${gender.name()}" th:text="${gender.getDisplayName()}">Gender</option>
+                    th:value="${npc.gender.name()}" th:text="${npc.gender.getDisplayName()}" />Gender</option>
         </select>
 
-        <!-- Add other select fields in the same way -->
-        <!-- ... -->
 
-        <select id="age" th:field="*{age}">
+        <label for="gender">Gender</label>
+        <select id="gender" th:field="*{npc.gender}" required>
+            <option th:each="gender : ${T(com.npcvillagers.npcvillage.models.enums.Gender).values()}"
+                    th:value="${npc.gender.name()}" th:text="${npc.gender.getDisplayName()}" />Gender</option>
+        </select>
+
+        <label for="age">Age</label>
+        <select id="age" th:field="*{npc.ageCategory}" required>
             <option th:each="age : ${T(com.npcvillagers.npcvillage.models.enums.Age).values()}"
-                    th:value="${age.name()}" th:text="${age.getDisplayName()}">Age</option>
+                    th:value="${npc.ageCategory.name()}" th:text="${npc.ageCategory.getDisplayName()}">Age</option>
         </select>
 
-        <input type="text" id="customAge" th:field="*{customAge}" placeholder="Custom Age" style="display: none;" />
+        <div th:if="${npc.ageCategory == 'CUSTOM'}">
+            <label for="customAge">Custom Age:</label>
+            <input type="text" id="customAge" th:field="${npc.customAge}" />
+        </div>
 
-        <select id="occupation" th:field="*{occupation}">
+        <select id="occupation" th:field="*{npc.occupationCategory}" required>
             <option th:each="occupation : ${T(com.npcvillagers.npcvillage.models.enums.Occupation).values()}"
-                    th:value="${occupation.name()}" th:text="${occupation.getDisplayName()}">Occupation</option>
+                    th:value="${npc.occupationCategory.name()}" th:text="${npc.occupationCategory.getDisplayName()}">Occupation</option>
         </select>
 
-        <input type="text" id="customOccupation" th:field="*{customOccupation}" placeholder="Custom Occupation" style="display: none;" />
+        <div th:if="${npc.occupationCategory == 'CUSTOM'}">
+            <label for="customOccupation">Custom Occupation:</label>
+            <input type="text" id="customOccupation" th:field="${npc.customOccupation}" />
+        </div>
 
         <!-- Add other fields in the same way -->
         <!-- ... -->
 
         <input type="submit" th:value="${submitButtonText}" />
     </form>
-Q</div>
+</div>
 </body>
 </html>

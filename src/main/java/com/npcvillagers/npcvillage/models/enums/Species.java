@@ -123,6 +123,12 @@ public enum Species {
         return subspeciesList.get(rand.nextInt(subspeciesList.size()));
     }
 
+    public Species findSpeciesByName(String speciesName) {
+        return Arrays.stream(Species.values())
+                .filter(species -> species.getDisplayName().equalsIgnoreCase(speciesName))
+                .findFirst()
+                .orElse(null);
+    }
     public String getDisplayName() {
         return displayName;
     }
