@@ -1,4 +1,4 @@
-package com.example.npcvillage;
+package com.npcvillagers.npcvillage;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

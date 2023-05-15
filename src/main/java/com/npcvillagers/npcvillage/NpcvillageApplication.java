@@ -1,4 +1,4 @@
-package com.example.npcvillage;
+package com.npcvillagers.npcvillage;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
