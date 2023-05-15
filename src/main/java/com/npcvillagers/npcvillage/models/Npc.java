@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 
 import java.util.List;
 
-
 @Entity
 public class Npc {
 
@@ -19,12 +18,14 @@ public class Npc {
     private Gender gender;
     private Alignment alignment;
 
+    // Fields to handle the custom option for age
     private AgeCategory ageCategory;
     private String customAge;
     private String age;
     @Column(columnDefinition = "text")
     private String voice = "Any";
 
+    // Fields to handle the custom option for occupation
     private OccupationCategory occupationCategory;
     private String customOccupation;
     private String occupation;
@@ -58,18 +59,19 @@ public class Npc {
 
     public Npc(String name, Species species, String subspecies, Gender gender, Alignment alignment, AgeCategory ageCategory, String customAge, String voice, OccupationCategory occupationCategory, String customOccupation, CharacterClass characterClass, CampaignStyle campaignStyle, PlayerRelationship playerRelationship, String appearance, String personality, String motivation, String ideal, String bond, String flaw, String history) {
         this.name = name;
-        this.species = species;
-        this.subspecies = subspecies;
+        setSpecies(species);
+        setSubspecies(subspecies);
         setGender(gender);
         setAlignment(alignment);
         setAgeCategory(ageCategory);
         this.customAge = customAge;
         this.age = getAge();
         this.voice = voice;
-        this.occupationCategory = occupationCategory;
+        setOccupationCategory(occupationCategory);
         this.customOccupation = customOccupation;
+        this.occupation = getOccupation();
         setCharacterClass(characterClass);
-        this.campaignStyle = campaignStyle;
+        setCampaignStyle(campaignStyle);
         setPlayerRelationship(playerRelationship);
         this.appearance = appearance;
         this.personality = personality;
@@ -102,7 +104,11 @@ public class Npc {
     }
 
     public void setSpecies(Species species) {
-        this.species = species;
+        if (species.name().startsWith("ANY")) {
+            this.species = species.getRandomSpecies();
+        } else {
+            this.species = species;
+        }
     }
 
     public String getSubspecies() {
@@ -110,7 +116,11 @@ public class Npc {
     }
 
     public void setSubspecies(String subspecies) {
-        this.subspecies = subspecies;
+        if ("Any".equals(subspecies)) {
+            this.subspecies = species.getRandomSubspecies();
+        } else {
+            this.subspecies = subspecies;
+        }
     }
 
     public Gender getGender() {
@@ -182,7 +192,11 @@ public class Npc {
     }
 
     public void setOccupationCategory(OccupationCategory occupationCategory) {
-        this.occupationCategory = occupationCategory;
+        if (occupationCategory == OccupationCategory.ANY) {
+            this.occupationCategory = occupationCategory.getRandomOccupation();
+        } else {
+            this.occupationCategory = occupationCategory;
+        }
     }
 
     public String getCustomOccupation() {
@@ -194,7 +208,11 @@ public class Npc {
     }
 
     public String getOccupation() {
-        return occupation;
+        if (this.occupationCategory == OccupationCategory.CUSTOM) {
+            return this.customOccupation;
+        } else {
+            return this.occupationCategory.getDisplayName();
+        }
     }
 
     public void setOccupation(String occupation) {
@@ -219,6 +237,7 @@ public class Npc {
 
     public void setCampaignStyle(CampaignStyle campaignStyle) {
         this.campaignStyle = campaignStyle;
+        this.themes = campaignStyle.getThemes();
     }
 
     public List<String> getThemes() {

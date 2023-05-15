@@ -18,10 +18,6 @@ public enum Gender {
         this.displayName = displayName;
     }
 
-    public String getDisplayName() {
-        return displayName;
-    }
-
     public Gender getRandomGender() {
         // For the general "Any" case, return a random gender from all available genders
         if (this == ANY) {
@@ -35,5 +31,9 @@ public enum Gender {
             // Otherwise, just return the gender
             return this;
         }
+    }
+
+    public String getDisplayName() {
+        return displayName;
     }
 }

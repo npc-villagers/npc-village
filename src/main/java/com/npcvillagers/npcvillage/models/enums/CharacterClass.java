@@ -28,10 +28,6 @@ public enum CharacterClass {
         this.displayName = displayName;
     }
 
-    public String getDisplayName() {
-        return this.displayName;
-    }
-
     public CharacterClass getRandomClass() {
         // For the general "Any" case, return a random class from all available classes
         if (this == ANY) {
@@ -45,5 +41,9 @@ public enum CharacterClass {
         else {
             return this;
         }
+    }
+
+    public String getDisplayName() {
+        return this.displayName;
     }
 }

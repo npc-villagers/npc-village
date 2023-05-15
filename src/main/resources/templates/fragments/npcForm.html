@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:fragment="npcForm">
+    <form id="npcForm" th:action="${formAction}" th:method="${formMethod}" th:object="${npc}">
+        <input type="text" th:field="*{name}" placeholder="Name" />
+
+        <select id="species" th:field="*{species}">
+            <!-- Species options populated here by JavaScript -->
+        </select>
+
+        <select id="subspecies" th:field="*{subspecies}">
+            <!-- Subspecies options populated here by JavaScript -->
+        </select>
+
+        <select th:field="*{gender}">
+            <option th:each="gender : ${T(com.npcvillagers.npcvillage.models.enums.Gender).values()}"
+                    th:value="${gender.name()}" th:text="${gender.getDisplayName()}">Gender</option>
+        </select>
+
+        <!-- Add other select fields in the same way -->
+        <!-- ... -->
+
+        <select id="age" th:field="*{age}">
+            <option th:each="age : ${T(com.npcvillagers.npcvillage.models.enums.Age).values()}"
+                    th:value="${age.name()}" th:text="${age.getDisplayName()}">Age</option>
+        </select>
+
+        <input type="text" id="customAge" th:field="*{customAge}" placeholder="Custom Age" style="display: none;" />
+
+        <select id="occupation" th:field="*{occupation}">
+            <option th:each="occupation : ${T(com.npcvillagers.npcvillage.models.enums.Occupation).values()}"
+                    th:value="${occupation.name()}" th:text="${occupation.getDisplayName()}">Occupation</option>
+        </select>
+
+        <input type="text" id="customOccupation" th:field="*{customOccupation}" placeholder="Custom Occupation" style="display: none;" />
+
+        <!-- Add other fields in the same way -->
+        <!-- ... -->
+
+        <input type="submit" th:value="${submitButtonText}" />
+    </form>
+Q</div>
+</body>
+</html>

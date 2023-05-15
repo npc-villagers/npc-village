@@ -23,10 +23,6 @@ public enum AgeCategory {
         this.displayName = displayName;
     }
 
-    public String getDisplayName() {
-        return displayName;
-    }
-
     public AgeCategory getRandomAgeCategory() {
         switch (this) {
             case ANY:
@@ -67,5 +63,9 @@ public enum AgeCategory {
 
     public boolean isAnyType() {
         return this == ANY || this == ANY_YOUTH || this == ANY_ADULT;
+    }
+
+    public String getDisplayName() {
+        return displayName;
     }
 }
