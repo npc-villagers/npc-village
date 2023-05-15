@@ -4,17 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>NPC Village - Home</title>
+    <title>Login</title>
 <!--    <link rel="stylesheet" href="/css/styles.css">-->
 </head>
-<body>
 <header>
 <!--    <nav th:replace="fragments/navbar :: navbar"></nav>-->
 </header>
+<body>
+<h1>Login</h1>
 <!--<div th:replace="/fragments/error :: applicationUser-error"></div>-->
-<main>
-    <h1>Welcome to NPC Village!</h1>
-    <p>Connect with fellow D&D Masters</p>
-</main>
+<form action="/login" method="POST">
+    <label>Username</label>
+    <input type="text" name="username">
+
+    <br>
+    <label>Password</label>
+    <input type="password" name="password">
+
+    <input type="submit" value="Login">
+</form>
+<p>Don't have an account? <a href="/signup">Sign up</a></p>
+<p class="logout-success" th:if="${param.logout}">You have successfully logged out.</p>
 </body>
 </html>
