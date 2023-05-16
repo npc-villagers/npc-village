@@ -8,10 +8,10 @@
 <div th:fragment="npcForm">
     <form id="npcForm" th:action="${formAction}" th:method="${formMethod}" th:object="${npc}">
         <label for="name">Name</label>
-        <input type="text" id="name" th:value="${npc.name}" required onclick="this.select();" onfocus="this.select();">
+        <input type="text" id="name" name="name" th:value="${npc.name}" required onclick="this.select();" onfocus="this.select();">
 
         <label for="species">Species</label>
-        <select id="species" required>
+        <select id="species" name="species" required>
             <option th:each="species : ${T(com.npcvillagers.npcvillage.models.enums.Species).values()}"
                     th:value="${species.name()}"
                     th:text="${species.getDisplayName()}"
@@ -19,12 +19,12 @@
         </select>
 
         <label for="subspecies">Subspecies</label>
-        <select id="subspecies" th:data-saved-value="${npc.subspecies}" required>
+        <select id="subspecies" name="subspecies" th:data-saved-value="${npc.subspecies}" required>
             <!-- Subspecies options populated here by JavaScript -->
         </select>
 
         <label for="gender">Gender</label>
-        <select id="gender" required>
+        <select id="gender" name="gender" required>
             <option th:each="gender : ${T(com.npcvillagers.npcvillage.models.enums.Gender).values()}"
                     th:value="${gender.name()}"
                     th:text="${gender.getDisplayName()}"
@@ -32,7 +32,7 @@
         </select>
 
         <label for="alignment">Alignment</label>
-        <select id="alignment" required>
+        <select id="alignment" name="alignment" required>
             <option th:each="alignment : ${T(com.npcvillagers.npcvillage.models.enums.Alignment).values()}"
                     th:value="${alignment.name()}"
                     th:text="${alignment.getDisplayName()}"
@@ -40,7 +40,7 @@
         </select>
 
         <label for="playerRelationship">Player Relationship</label>
-        <select id="playerRelationship" required>
+        <select id="playerRelationship" name="playerRelationship" required>
             <option th:each="playerRelationship : ${T(com.npcvillagers.npcvillage.models.enums.PlayerRelationship).values()}"
                     th:value="${playerRelationship.name()}"
                     th:text="${playerRelationship.getDisplayName()}"
@@ -48,7 +48,7 @@
         </select>
 
         <label for="campaignStyle">Campaign Style</label>
-        <select id="campaignStyle" required>
+        <select id="campaignStyle" name="campaignStyle" required>
             <option th:each="campaignStyle : ${T(com.npcvillagers.npcvillage.models.enums.CampaignStyle).values()}"
                     th:value="${campaignStyle.name()}"
                     th:text="${campaignStyle.getDisplayName()}"
@@ -56,10 +56,10 @@
         </select>
 
         <label for="voice">Voice</label>
-        <input type="text" id="voice" th:value="${npc.voice}" required>
+        <input type="text" id="voice" name="voice" th:value="${npc.voice}" required>
 
         <label for="age">Age</label>
-        <select id="age" required>
+        <select id="age" name="age" required>
             <option th:each="ageCategory : ${T(com.npcvillagers.npcvillage.models.enums.AgeCategory).values()}"
                     th:value="${ageCategory.name()}"
                     th:text="${ageCategory.getDisplayName()}"
@@ -68,11 +68,11 @@
 
         <div id="customAgeDiv" style="display: none;">
             <label for="customAge">Custom Age</label>
-            <input type="text" id="customAge" th:value="${npc.customAge}">
+            <input type="text" id="customAge" name="customAge" th:value="${npc.customAge}">
         </div>
 
         <label for="occupation">Occupation</label>
-        <select id="occupation"  required>
+        <select id="occupation"  name="occupation" required>
             <option th:each="occupationCategory : ${T(com.npcvillagers.npcvillage.models.enums.OccupationCategory).values()}"
                     th:value="${occupationCategory.name()}"
                     th:text="${occupationCategory.getDisplayName()}"
@@ -81,29 +81,29 @@
 
         <div id="customOccupationDiv" style="display: none;">
             <label for="customOccupation">Custom Occupation</label>
-            <input type="text" id="customOccupation" th:value="${npc.customOccupation}">
+            <input type="text" id="customOccupation" name="customOccupation" th:value="${npc.customOccupation}">
         </div>
 
         <label for="appearance">Appearance</label>
-        <input type="text" id="appearance" th:value="${npc.appearance}" required>
+        <input type="text" id="appearance" name="appearance" th:value="${npc.appearance}" required>
 
         <label for="personality">Personality</label>
-        <input type="text" id="personality" th:value="${npc.personality}" required>
+        <input type="text" id="personality" name="personality" th:value="${npc.personality}" required>
 
         <label for="motivation">Motivation</label>
-        <input type="text" id="motivation" th:value="${npc.motivation}" required>
+        <input type="text" id="motivation" name="motivation" th:value="${npc.motivation}" required>
 
         <label for="ideal">Ideal</label>
-        <input type="text" id="ideal" th:value="${npc.ideal}" required>
+        <input type="text" id="ideal" name="ideal" th:value="${npc.ideal}" required>
 
         <label for="bond">Bond</label>
-        <input type="text" id="bond" th:value="${npc.bond}" required>
+        <input type="text" id="bond" name="bond" th:value="${npc.bond}" required>
 
         <label for="flaw">Flaw</label>
-        <input type="text" id="flaw" th:value="${npc.flaw}" required>
+        <input type="text" id="flaw" name="flaw" th:value="${npc.flaw}" required>
 
         <label for="history">History</label>
-        <input type="text" id="history" th:value="${npc.history}" required>
+        <input type="text" id="history" name="history" th:value="${npc.history}" required>
 
         <input type="submit" th:value="${submitButtonText}" />
     </form>

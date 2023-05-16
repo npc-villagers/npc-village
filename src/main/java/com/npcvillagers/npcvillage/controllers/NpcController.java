@@ -41,7 +41,6 @@ public class NpcController {
     public String getNpc(@PathVariable("npcId") Long npcId, Model m, Principal p, RedirectAttributes redir) {
         if (p != null) {
             Optional<Npc> createdNpc = npcRepository.findById(npcId);
-            System.out.println(createdNpc.toString());
             if (createdNpc.isPresent()) {
                 Npc npc = createdNpc.get();
                 m.addAttribute("npc", npc);
@@ -60,20 +59,29 @@ public class NpcController {
     public String createNpc(@ModelAttribute Npc npc, RedirectAttributes redir, Principal p) {
         if (p != null) {
             // Call the setters to randomize fields as necessary
-            npc.setSpecies(npc.getSpecies());
-            npc.setSubspecies(npc.getSubspecies());
-            npc.setGender(npc.getGender());
-            npc.setAlignment(npc.getAlignment());
-            npc.setAgeCategory(npc.getAgeCategory());
-            npc.setAge(npc.getAge());
-            npc.setOccupationCategory(npc.getOccupationCategory());
-            npc.setOccupation(npc.getOccupation());
-            npc.setCharacterClass(npc.getCharacterClass());
-            npc.setCampaignStyle(npc.getCampaignStyle());
-            npc.setPlayerRelationship(npc.getPlayerRelationship());
+//            npc.setSpecies(npc.getSpecies());
+//            npc.setSubspecies(npc.getSubspecies());
+//            npc.setGender(npc.getGender());
+//            npc.setAlignment(npc.getAlignment());
+//            npc.setAgeCategory(npc.getAgeCategory());
+//            npc.setCustomAge(npc.getCustomAge());
+//            npc.setAge(npc.getAge());
+//            npc.setOccupationCategory(npc.getOccupationCategory());
+//            npc.setCustomOccupation(npc.getCustomOccupation());
+//            npc.setOccupation(npc.getOccupation());
+//            npc.setCharacterClass(npc.getCharacterClass());
+//            npc.setCampaignStyle(npc.getCampaignStyle());
+//            npc.setPlayerRelationship(npc.getPlayerRelationship());
+//            npc.setAppearance(npc.getAppearance());
+//            npc.setPersonality(npc.getPersonality());
+//            npc.setMotivation(npc.getMotivation());
+//            npc.setIdeal(npc.getIdeal());
+//            npc.setBond(npc.getBond());
+//            npc.setFlaw(npc.getFlaw());
+//            npc.setHistory(npc.getHistory());
 
-            Npc savedNpc = npcRepository.save(npc);  // save the npc to the database
-            return "redirect:/create/" + savedNpc.getId();  // redirect to the GET handler with the npc ID
+            npcRepository.save(npc);  // save the npc to the database
+            return "redirect:/create/" + npc.getId();  // redirect to the GET handler with the npc ID
         } else {
             redir.addFlashAttribute("errorMessage", "You must be logged in to create NPCs!");
             return "redirect:/login";

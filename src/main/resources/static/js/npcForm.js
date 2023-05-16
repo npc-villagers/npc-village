@@ -6,22 +6,18 @@ function loadSubspecies(speciesName) {
         .then(function(response) {
             let subspeciesSelect = document.getElementById('subspecies');
             subspeciesSelect.options.length = 0; // remove any existing options
+            let savedSubspecies = subspeciesSelect.getAttribute('data-saved-value');
 
             response.data.forEach(subspecies => {
                 let option = document.createElement('option');
                 option.text = subspecies;
                 option.value = subspecies;
-                if (option.value === subspeciesSelect.value) {
+                subspeciesSelect.add(option);
+                if (option.value === savedSubspecies) {
                     option.selected = true;
                 }
-                subspeciesSelect.add(option);
             });
 
-            // Retrieve the data-saved-value attribute after the subspecies options are loaded
-            let savedSubspecies = subspeciesSelect.getAttribute('data-saved-value');
-            if (savedSubspecies) {
-                subspeciesSelect.value = savedSubspecies;
-            }
         })
         .catch(error => {
             if (error.response && error.response.status === 404) {
@@ -60,8 +56,8 @@ window.addEventListener('load', function() {
     let speciesSelect = document.getElementById('species');
     let selectedSpecies = speciesSelect.value;
 
-    // Call loadSubspecies with the selected species value and the callback function
- loadSubspecies(selectedSpecies);
+    // Call loadSubspecies with the selected species value
+    loadSubspecies(selectedSpecies);
 
     // The following code will let the default values in text fields be highlighted completely when a user clicks into it. Any other value than the default "Any" will not trigger the event listener
     let inputs = document.querySelectorAll('input[type=text]');
