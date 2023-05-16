@@ -26,12 +26,12 @@
 <!--    <div class="postcontent-container">-->
 <!--        <p th:text="${post.body}"></p>-->
 <!--    </div>-->
-<button th:action="${'/user/' + userToDelete}" th:method="DELETE">
+<form th:action="${'/profile/' + id}" th:method="DELETE">
 
         <!--  use th:if to make sure the delete button is only visible on a user's own profile -->
     <input th:if="${username.equals(username)}" type="submit" value="Delete My Profile">
 
-</button>
+</form>
 <!--</article>-->
 </body>
 </html>

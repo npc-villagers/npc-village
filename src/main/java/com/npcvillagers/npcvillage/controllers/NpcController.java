@@ -1,5 +1,6 @@
 package com.npcvillagers.npcvillage.controllers;
 
+import com.npcvillagers.npcvillage.models.AppUser;
 import com.npcvillagers.npcvillage.models.Npc;
 import com.npcvillagers.npcvillage.models.NpcForm;
 import com.npcvillagers.npcvillage.repos.AppUserRepository;
@@ -34,6 +35,11 @@ public class NpcController {
     public String getCreateDefault(Model m, Principal p, RedirectAttributes redir) {
         if (p != null) {
             NpcForm npcForm = new NpcForm();
+            String username = p.getName();
+            AppUser loggedInUser = appUserRepo.findByUsername(username);
+            if (loggedInUser != null) {
+               m.addAttribute("username", username);
+            }
             m.addAttribute("npcForm", npcForm);
             return "create";
         } else {
