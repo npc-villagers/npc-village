@@ -8,9 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.ui.Model;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -110,6 +108,28 @@ public class AppUserController {
         }
 
         return new RedirectView("/profile");
+    }
+
+    //METHOD FOR DELETING A USER
+    @DeleteMapping("/user/{id}")
+    public RedirectView deleteUser(@PathVariable Long id, Principal p, RedirectAttributes redir) {
+        //delete
+        AppUser userToDelete = appUserRepo.findById(id).orElseThrow();
+        if(p != null && p.getName().equals(userToDelete.getUsername())) {
+            appUserRepo.deleteById(id);
+            //make sure the p is null after delete
+            //otherwise you may have some incorrect values still stored in your session
+            p = null;
+        } else {
+            //if a user isn't authorized to delete and they press the button
+            //flash an error and keep them on the same page
+            redir.addFlashAttribute("errorMessage", "Cannot delete another user's account!");
+            return new RedirectView("/user/"+id);
+        }
+
+        //with a void return type we would just return an error page after delete is completed
+        //let's bring users back to the homepage instead
+        return new RedirectView("/");
     }
 
 }
