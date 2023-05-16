@@ -233,7 +233,8 @@ $RECYCLE.BIN/
 
 # End of https://www.gitignore.io/api/node,macos,linux,windows,webstorm,visualstudiocode
 
-.gradle
+.gradle/
+build/
 **/build/
 !src/**/build/
 
@@ -254,3 +255,6 @@ gradle-app.setting
 .project
 # JDT-specific (Eclipse Java Development Tools)
 .classpath
+
+
+
