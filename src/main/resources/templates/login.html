@@ -8,11 +8,11 @@
 <!--    <link rel="stylesheet" href="/css/styles.css">-->
 </head>
 <header>
-<!--    <nav th:replace="fragments/navbar :: navbar"></nav>-->
+    <nav th:replace="fragments/nav-header :: navbar"></nav>
 </header>
 <body>
 <h1>Login</h1>
-<!--<div th:replace="/fragments/error :: applicationUser-error"></div>-->
+<div th:replace="/fragments/error-fragment :: applicationUser-error"></div>
 <form action="/login" method="POST">
     <label>Username</label>
     <input type="text" name="username">
