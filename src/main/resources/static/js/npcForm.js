@@ -1,6 +1,6 @@
 'use strict';
 
-// This function updates the subspecies dropdown when a species is selected
+// This function updates the subspecies dropdown when a species is selected, and loads the saved subspecies if it's set
 function loadSubspecies(speciesName) {
     axios.get('/species/' + speciesName)
         .then(function(response) {
@@ -11,16 +11,25 @@ function loadSubspecies(speciesName) {
                 let option = document.createElement('option');
                 option.text = subspecies;
                 option.value = subspecies;
+                if (option.value === subspeciesSelect.value) {
+                    option.selected = true;
+                }
                 subspeciesSelect.add(option);
             });
+
+            // Retrieve the data-saved-value attribute after the subspecies options are loaded
+            let savedSubspecies = subspeciesSelect.getAttribute('data-saved-value');
+            if (savedSubspecies) {
+                subspeciesSelect.value = savedSubspecies;
+            }
         })
         .catch(error => {
-                if (error.response && error.response.status === 404) {
-                    console.error('Species not found!');
-                } else {
-                    console.error('An error occurred!');
-                }
-            });
+            if (error.response && error.response.status === 404) {
+                console.error('Species not found!');
+            } else {
+                console.error('An error occurred!');
+            }
+        });
 }
 
 // This function shows or hides the customAge field based on the selected age
@@ -45,13 +54,20 @@ function toggleCustomOccupation() {
     }
 }
 
-// Populate subspecies on page load
+// Populate subspecies on page load and add a nice-to-have functionality in our text fields that highlights the whole field if it's a default value, instead of placing the cursor at the end
 window.addEventListener('load', function() {
+    // Get the selected species value
+    let speciesSelect = document.getElementById('species');
+    let selectedSpecies = speciesSelect.value;
+
+    // Call loadSubspecies with the selected species value and the callback function
+ loadSubspecies(selectedSpecies);
+
     // The following code will let the default values in text fields be highlighted completely when a user clicks into it. Any other value than the default "Any" will not trigger the event listener
     let inputs = document.querySelectorAll('input[type=text]');
 
-    inputs.forEach(function(input) {
-        var handler = function(event) {
+    inputs.forEach((input) => {
+        let handler = (event) => {
             if (event.target.value === 'Any') {
                 setTimeout(() => event.target.select(), 0);
             }
@@ -59,16 +75,9 @@ window.addEventListener('load', function() {
 
         input.addEventListener('focus', handler);
     });
-
-    // Get the selected species value
-    let speciesSelect = document.getElementById('species');
-    let selectedSpecies = speciesSelect.value;
-
-    // Call loadSubspecies with the selected species value
-    loadSubspecies(selectedSpecies);
 });
 
-// Add event listener to update the subspecies option
+// Add event listeners to update the subspecies option, and conditionally display custom age and occupation options
 document.getElementById('species').addEventListener('change', function() {
     loadSubspecies(this.value);
 });

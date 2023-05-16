@@ -13,12 +13,16 @@ public class Npc {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     long id;
     private String name = "Any";
+    @Enumerated(EnumType.STRING)
     private Species species = Species.ANY;
     private String subspecies = "Any";
+    @Enumerated(EnumType.STRING)
     private Gender gender = Gender.ANY;
+    @Enumerated(EnumType.STRING)
     private Alignment alignment = Alignment.ANY;
 
     // Fields to handle the custom option for age
+    @Enumerated(EnumType.STRING)
     private AgeCategory ageCategory = AgeCategory.ANY;
     private String customAge;
     private String age;
@@ -26,13 +30,17 @@ public class Npc {
     private String voice = "Any";
 
     // Fields to handle the custom option for occupation
+    @Enumerated(EnumType.STRING)
     private OccupationCategory occupationCategory = OccupationCategory.ANY;
     private String customOccupation;
     private String occupation;
 
+    @Enumerated(EnumType.STRING)
     private CharacterClass characterClass = CharacterClass.ANY;
+    @Enumerated(EnumType.STRING)
     private CampaignStyle campaignStyle = CampaignStyle.HIGH_FANTASY;
     private List<String> themes = campaignStyle.getThemes();;
+    @Enumerated(EnumType.STRING)
     private PlayerRelationship playerRelationship = PlayerRelationship.ANY;
     @Column(columnDefinition = "text")
     private String appearance = "Any";
@@ -176,7 +184,11 @@ public class Npc {
     }
 
     public void setAge(String age) {
-        this.age = age;
+        if (this.ageCategory == AgeCategory.CUSTOM) {
+            this.age = this.customAge;
+        } else {
+            this.age = this.ageCategory.getDisplayName();
+        }
     }
 
     public String getVoice() {
@@ -216,7 +228,12 @@ public class Npc {
     }
 
     public void setOccupation(String occupation) {
-        this.occupation = occupation;
+        if (this.occupationCategory == OccupationCategory.CUSTOM) {
+            this.occupation = occupation;
+        } else {
+            this.occupation = this.occupationCategory.getDisplayName();
+        }
+
     }
 
     public CharacterClass getCharacterClass() {
