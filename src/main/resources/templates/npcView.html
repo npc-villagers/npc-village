@@ -15,9 +15,9 @@
 <h1>Create NPC</h1>
 <div th:replace="~{fragments/npcForm :: npcForm (formAction='/create', formMethod='post', submitButtonText='Create')}"></div>
 <div th:replace="~{fragments/npcStatBlock :: npcStatBlock(${npc})}"></div>
-<form action="/saveToMyVillage" method="POST" th:if="${!isSaved}">
+<form action="/saveToMyVillage" method="POST">
   <input type="hidden" name="npcId" th:value="${npc.id}">
-  <input type="submit" value="Add to Village">
+  <input type="submit" th:disabled="${isSaved}" th:value="${isSaved} ? 'Saved!' : 'Add to Village'">
 </form>
 </body>
 </html>
