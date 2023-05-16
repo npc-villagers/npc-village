@@ -116,15 +116,16 @@ public enum Species {
             return "N/A";
         }
 
-        if (this.subspecies.size() == 1 && this.subspecies.get(0).equals("Any")) {
+        List<String> filteredSubspecies = this.subspecies.stream()
+                .filter(subspecies -> !subspecies.equals("Any"))
+                .collect(toList());
+
+        if (filteredSubspecies.isEmpty()) {
             return "Any";
         }
 
-        List<String> subspeciesList = new ArrayList<>(this.subspecies);
-        subspeciesList.remove("Any");
         Random rand = new Random();
-
-        return subspeciesList.get(rand.nextInt(subspeciesList.size()));
+        return filteredSubspecies.get(rand.nextInt(filteredSubspecies.size()));
     }
 
     public Species findSpeciesByName(String speciesName) {

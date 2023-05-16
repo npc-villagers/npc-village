@@ -15,15 +15,19 @@ public class NpcFactory {
         Npc npc = new Npc();
 
         npc.setName(form.getName());
-
-        // If the form species starts with ANY, then get a random species, otherwise set the species to the form value
+        // If the form species starts with ANY, then get a random species, otherwise set the species to the form value, and we tie it to the subspecies as well, since we know implicitly that an "Any" option for species will correspond to the same for subspecies
         Species formSpecies = form.getSpecies();
-        npc.setSpecies(formSpecies.name().startsWith("ANY") ? formSpecies.getRandomSpecies() : formSpecies);
+        if (formSpecies.name().startsWith("ANY")) {
+            Species randomizedSpecies = formSpecies.getRandomSpecies();
+            String randomizedSubspecies = randomizedSpecies.getRandomSubspecies();
+            npc.setSpecies(randomizedSpecies);
+            npc.setSubspecies(randomizedSubspecies);
+        } else {
+            npc.setSpecies(form.getSpecies());
+            npc.setSubspecies(form.getSubspecies());
+        }
 
-        // We do the same sort of thing for any dropdown field that has an "Any" option
-        String formSubspecies = form.getSubspecies();
-        npc.setSubspecies("Any".equals(formSubspecies) ? formSpecies.getRandomSubspecies() : formSubspecies);
-
+        // We do the same sort of thing for any dropdown field that has an "Any" option.
         Gender formGender = form.getGender();
         npc.setGender(formGender == Gender.ANY ? formGender.getRandomGender() : formGender);
 
