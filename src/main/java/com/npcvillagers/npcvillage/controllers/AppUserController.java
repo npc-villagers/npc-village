@@ -142,12 +142,11 @@ public class AppUserController {
             m.addAttribute("username", user.getUsername());
             List<Npc> npcs = user.getNpcs();
             m.addAttribute("npcs", npcs);
-            for (int i = 0; i < npcs.size(); i++) {
-                System.out.println(npcs.get(i).getName());
-            }
+
             return "myvillage";
         } else {
             redir.addFlashAttribute("errorMessage", "You must be logged in to see your village!");
+
             return "redirect:/login";
         }
     }

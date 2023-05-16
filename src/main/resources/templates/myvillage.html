@@ -21,6 +21,15 @@
 <div th:if="${!npcs.isEmpty()}" class="npcs-container">
   <div th:each="npc : ${npcs}">
     <div th:if="${npc != null}" th:replace="~{fragments/npcStatBlock :: npcStatBlock(${npc})}"></div>
+    <form action="/myvillage/{npc.id}" th:method="PUT">
+      <input type="hidden" name="npcId" th:value="${npc.id}">
+      <input type="submit" value="Edit">
+    </form>
+
+    <form th:action="@{/myvillage/{npcId}(npcId=${npc.id})}" method="post">
+      <input type="hidden" name="_method" value="delete" />
+      <input type="submit" value="Delete">
+    </form>
   </div>
 </div>
 </body>

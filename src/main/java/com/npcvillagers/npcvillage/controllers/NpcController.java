@@ -117,34 +117,38 @@ public class NpcController {
         }
     }
 
-    @PutMapping("/myvillage/{id}")
-    public RedirectView updateNpc(@PathVariable Long id, RedirectAttributes redir) {
-        Npc npcToBeUpdated = npcRepository.findById(id).orElseThrow();
+    @PutMapping("/myvillage/{npcId}")
+    public String editNpc(@PathVariable Long npcId, HttpSession session, RedirectAttributes redir, Model m, Principal p) {
+        if (p != null) {
+            AppUser appUser = appUserRepository.findByUsername(p.getName());
+            Npc npcToBeUpdated = npcRepository.findById(npcId).orElse(null);
+            if (npcToBeUpdated != null) {
+                NpcForm npcForm = npcFactory.createNpcForm(npcToBeUpdated);
+                session.setAttribute("npcForm", npcForm);
 
-        if (){
-            //update logic, process form data
-            npcRepository.save(npcToBeUpdated);
+
+                return "redirect:/create/" + npcToBeUpdated.getId();  // redirect to the GET handler with the npc ID
+            } else {
+                redir.addFlashAttribute("errorMessage", "NPC not found!");
+
+                return "redirect:/myvillage";
+            }
+        } else {
+            redir.addFlashAttribute("errorMessage", "You must be logged in to create NPCs!");
+
+            return "redirect:/login";
         }
-        else {
-            redir.addFlashAttribute("errorMessage", "Can not update npc");
+    }
+
+    @DeleteMapping("/myvillage/{npcId}")
+    public RedirectView deleteNpc(@PathVariable Long npcId, RedirectAttributes redir) {
+        Optional<Npc> npcToBeDeleted = npcRepository.findById(npcId);
+
+        if (npcToBeDeleted.isPresent()) {
+            npcRepository.delete(npcToBeDeleted.get());
+        } else {
+            redir.addFlashAttribute("errorMessage", "NPC not found!");
         }
         return new RedirectView("/myvillage");
     }
-
-//
-//    @DeleteMapping("/myvillage/{id}")
-//    public RedirectView deleteNpc(@PathVariable Long id, RedirectAttributes redir) {
-//        Npc npcToDelete = NpcRepository.findById(id).orElseThrow();
-//
-//        if (p != null && p.getName().equals(npcToDelete.getNpc())){
-//            npcRepository.deleteById(id);
-//
-//            p = null;
-//        } else {
-//            redir.addFlashAttribute("errorMessage", "Cannot delete");
-//            return new RedirectView("/");
-//        }
-//        return new RedirectView("/");
-//    }
-
 }
