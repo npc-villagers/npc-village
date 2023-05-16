@@ -5,73 +5,54 @@ import jakarta.persistence.*;
 
 import java.util.List;
 
-@Entity
-public class Npc {
+public class NpcForm {
 
     // Fields
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    long id;
-    private String name;
-    @Enumerated(EnumType.STRING)
-    private Species species;
-    private String subspecies;
-    @Enumerated(EnumType.STRING)
-    private Gender gender;
-    @Enumerated(EnumType.STRING)
-    private Alignment alignment;
+    private String name = "Any";
+    private Species species = Species.ANY;
+    private String subspecies = "Any";
+    private Gender gender = Gender.ANY;
+    private Alignment alignment = Alignment.ANY;
 
     // Fields to handle the custom option for age
-    @Enumerated(EnumType.STRING)
-    private AgeCategory ageCategory;
+    private AgeCategory ageCategory = AgeCategory.ANY;
     private String customAge;
     private String age;
-    @Column(columnDefinition = "text")
-    private String voice;
+    private String voice = "Any";
 
     // Fields to handle the custom option for occupation
-    @Enumerated(EnumType.STRING)
     private OccupationCategory occupationCategory = OccupationCategory.ANY;
     private String customOccupation;
-    private String occupation;
 
-    @Enumerated(EnumType.STRING)
-    private CharacterClass characterClass;
-    @Enumerated(EnumType.STRING)
-    private CampaignStyle campaignStyle;
-    private List<String> themes;;
-    @Enumerated(EnumType.STRING)
-    private PlayerRelationship playerRelationship;
-    @Column(columnDefinition = "text")
-    private String appearance;
-    @Column(columnDefinition = "text")
-    private String personality;
-    @Column(columnDefinition = "text")
-    private String motivation;
-    @Column(columnDefinition = "text")
-    private String ideal;
-    @Column(columnDefinition = "text")
-    private String bond;
-    @Column(columnDefinition = "text")
-    private String flaw;
-    @Column(columnDefinition = "text")
-    private String history;
-    @ManyToOne
-    @JoinColumn(name = "appUser_id")
-    private AppUser appUser;
 
-    // Constructors
-    public Npc() {
+    private CharacterClass characterClass = CharacterClass.ANY;
+
+    private CampaignStyle campaignStyle = CampaignStyle.HIGH_FANTASY;
+
+    private PlayerRelationship playerRelationship = PlayerRelationship.ANY;
+
+    private String appearance = "Any";
+
+    private String personality = "Any";
+
+    private String motivation = "Any";
+
+    private String ideal = "Any";
+
+    private String bond = "Any";
+
+    private String flaw = "Any";
+
+    private String history = "Any";
+
+
+    // Constructor
+    public NpcForm() {
         // empty
     }
 
-    public long getId() {
-        return id;
-    }
+    // Getters and setters
 
-    public void setId(long id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;
@@ -161,14 +142,6 @@ public class Npc {
         this.customOccupation = customOccupation;
     }
 
-    public String getOccupation() {
-        return occupation;
-    }
-
-    public void setOccupation(String occupation) {
-        this.occupation = occupation;
-    }
-
     public CharacterClass getCharacterClass() {
         return characterClass;
     }
@@ -183,14 +156,6 @@ public class Npc {
 
     public void setCampaignStyle(CampaignStyle campaignStyle) {
         this.campaignStyle = campaignStyle;
-    }
-
-    public List<String> getThemes() {
-        return themes;
-    }
-
-    public void setThemes(List<String> themes) {
-        this.themes = themes;
     }
 
     public PlayerRelationship getPlayerRelationship() {
@@ -257,19 +222,10 @@ public class Npc {
         this.history = history;
     }
 
-    public AppUser getAppUser() {
-        return appUser;
-    }
-
-    public void setAppUser(AppUser appUser) {
-        this.appUser = appUser;
-    }
-
     @Override
     public String toString() {
-        return "Npc{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
+        return "NpcForm{" +
+                "name='" + name + '\'' +
                 ", species=" + species +
                 ", subspecies='" + subspecies + '\'' +
                 ", gender=" + gender +
@@ -280,10 +236,8 @@ public class Npc {
                 ", voice='" + voice + '\'' +
                 ", occupationCategory=" + occupationCategory +
                 ", customOccupation='" + customOccupation + '\'' +
-                ", occupation='" + occupation + '\'' +
                 ", characterClass=" + characterClass +
                 ", campaignStyle=" + campaignStyle +
-                ", themes=" + themes +
                 ", playerRelationship=" + playerRelationship +
                 ", appearance='" + appearance + '\'' +
                 ", personality='" + personality + '\'' +
@@ -292,7 +246,6 @@ public class Npc {
                 ", bond='" + bond + '\'' +
                 ", flaw='" + flaw + '\'' +
                 ", history='" + history + '\'' +
-                ", appUser=" + appUser +
                 '}';
     }
 }
