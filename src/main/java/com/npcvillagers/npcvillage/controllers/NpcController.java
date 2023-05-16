@@ -5,6 +5,7 @@ import com.npcvillagers.npcvillage.models.NpcForm;
 import com.npcvillagers.npcvillage.repos.AppUserRepository;
 import com.npcvillagers.npcvillage.repos.NpcRepository;
 import com.npcvillagers.npcvillage.services.NpcFactory;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,7 +32,6 @@ public class NpcController {
 
     @GetMapping("/create")
     public String getCreateDefault(Model m, Principal p, RedirectAttributes redir) {
-        System.out.println("I'm here");
         if (p != null) {
             NpcForm npcForm = new NpcForm();
             m.addAttribute("npcForm", npcForm);
@@ -43,14 +43,20 @@ public class NpcController {
     }
 
     @GetMapping("/create/{npcId}")
-    public String getNpc(@PathVariable("npcId") Long npcId, Model m, Principal p, RedirectAttributes redir) {
+    public String getNpc(@PathVariable("npcId") Long npcId, Model m, Principal p, RedirectAttributes redir, HttpSession session) {
         if (p != null) {
             Optional<Npc> createdNpc = npcRepository.findById(npcId);
             if (createdNpc.isPresent()) {
                 Npc npc = createdNpc.get();
-                if (!m.containsAttribute("npcForm")) {
-                    m.addAttribute("npcForm", npcFactory.createNpcForm(npc));
+
+                // Get npcForm from session if available, or create a new one
+                NpcForm npcForm = (NpcForm) session.getAttribute("npcForm");
+                if (npcForm == null) {
+                    npcForm = npcFactory.createNpcForm(npc);
+                    session.setAttribute("npcForm", npcForm);
                 }
+
+                m.addAttribute("npcForm", npcForm);
                 m.addAttribute("npc", npc);
                 return "npcView";
             } else {
@@ -64,16 +70,17 @@ public class NpcController {
     }
 
     @PostMapping("/create")
-    public String createNpc(@ModelAttribute NpcForm npcForm, RedirectAttributes redir, Principal p) {
+    public String createNpc(@ModelAttribute NpcForm npcForm, HttpSession session, RedirectAttributes redir, Principal p) {
         if (p != null) {
             Npc npc = npcFactory.createNpc(npcForm);
             npcRepository.save(npc);  // save the npc to the database
-            redir.addFlashAttribute("npcForm", npcForm);  // add npcForm as a flash attribute
+            session.setAttribute("npcForm", npcForm);  // add npcForm to the session
             return "redirect:/create/" + npc.getId();  // redirect to the GET handler with the npc ID
         } else {
             redir.addFlashAttribute("errorMessage", "You must be logged in to create NPCs!");
             return "redirect:/login";
         }
     }
+
 
 }
