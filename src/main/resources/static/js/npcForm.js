@@ -1,4 +1,4 @@
-/strict
+'use strict';
 
 // This function updates the subspecies dropdown when a species is selected
 function loadSubspecies(speciesName) {
@@ -26,4 +26,14 @@ function loadSubspecies(speciesName) {
 // Add event listener to update the subspecies option
 document.getElementById('species').addEventListener('change', function() {
     loadSubspecies(this.value);
+});
+
+// Populate subspecies on page load
+window.addEventListener('load', function() {
+    // Get the selected species value
+    let speciesSelect = document.getElementById('species');
+    let selectedSpecies = speciesSelect.value;
+
+    // Call loadSubspecies with the selected species value
+    loadSubspecies(selectedSpecies);
 });

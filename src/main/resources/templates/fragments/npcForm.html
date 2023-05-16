@@ -8,51 +8,45 @@
 <div th:fragment="npcForm">
     <form id="npcForm" th:action="${formAction}" th:method="${formMethod}" th:object="${npc}">
         <label for="name">Name</label>
-        <input type="text" id="name" th:field="*{npc.name}" th:value=${npc.name}" required>Name</input>
+        <input type="text" id="name" th:value="${npc.name}" required>
 
         <label for="species">Species</label>
-        <select id="species" th:field="*{npc.species}" required>
+        <select id="species" required>
             <option th:each="species : ${T(com.npcvillagers.npcvillage.models.enums.Species).values()}"
                     th:value="${species.name()}" th:text="${species.getDisplayName()}">Species</option>
         </select>
 
         <label for="subspecies">Subspecies</label>
-        <select id="subspecies" th:field="*{npc.subspecies}" required>
+        <select id="subspecies"  required>
             <!-- Subspecies options populated here by JavaScript -->
         </select>
 
         <label for="gender">Gender</label>
-        <select id="gender" th:field="*{npc.gender}" required>
+        <select id="gender" required>
             <option th:each="gender : ${T(com.npcvillagers.npcvillage.models.enums.Gender).values()}"
-                    th:value="${npc.gender.name()}" th:text="${npc.gender.getDisplayName()}" />Gender</option>
-        </select>
-
-
-        <label for="gender">Gender</label>
-        <select id="gender" th:field="*{npc.gender}" required>
-            <option th:each="gender : ${T(com.npcvillagers.npcvillage.models.enums.Gender).values()}"
-                    th:value="${npc.gender.name()}" th:text="${npc.gender.getDisplayName()}" />Gender</option>
+                    th:value="${gender.name()}" th:text="${gender.getDisplayName()}" />Gender</option>
         </select>
 
         <label for="age">Age</label>
-        <select id="age" th:field="*{npc.ageCategory}" required>
-            <option th:each="age : ${T(com.npcvillagers.npcvillage.models.enums.Age).values()}"
-                    th:value="${npc.ageCategory.name()}" th:text="${npc.ageCategory.getDisplayName()}">Age</option>
+        <select id="age" required>
+            <option th:each="ageCategory : ${T(com.npcvillagers.npcvillage.models.enums.AgeCategory).values()}"
+                    th:value="${ageCategory.name()}" th:text="${ageCategory.getDisplayName()}">Age</option>
         </select>
 
         <div th:if="${npc.ageCategory == 'CUSTOM'}">
-            <label for="customAge">Custom Age:</label>
-            <input type="text" id="customAge" th:field="${npc.customAge}" />
+            <label for="customAge">Custom Age</label>
+            <input type="text" id="customAge" th:value="${npc.customAge}">
         </div>
 
-        <select id="occupation" th:field="*{npc.occupationCategory}" required>
-            <option th:each="occupation : ${T(com.npcvillagers.npcvillage.models.enums.Occupation).values()}"
-                    th:value="${npc.occupationCategory.name()}" th:text="${npc.occupationCategory.getDisplayName()}">Occupation</option>
+        <label for="occupation">Occupation</label>
+        <select id="occupation"  required>
+            <option th:each="occupationCategory : ${T(com.npcvillagers.npcvillage.models.enums.OccupationCategory).values()}"
+                    th:value="${occupationCategory.name()}" th:text="${occupationCategory.getDisplayName()}">Occupation</option>
         </select>
 
         <div th:if="${npc.occupationCategory == 'CUSTOM'}">
             <label for="customOccupation">Custom Occupation:</label>
-            <input type="text" id="customOccupation" th:field="${npc.customOccupation}" />
+            <input type="text" id="customOccupation" th:value="${npc.customOccupation}">
         </div>
 
         <!-- Add other fields in the same way -->
@@ -60,6 +54,10 @@
 
         <input type="submit" th:value="${submitButtonText}" />
     </form>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script th:src="@{/js/npcForm.js}"></script>
 </div>
 </body>
 </html>

@@ -13,27 +13,27 @@ public class Npc {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     long id;
     private String name = "Any";
-    private Species species;
-    private String subspecies;
-    private Gender gender;
-    private Alignment alignment;
+    private Species species = Species.ANY;
+    private String subspecies = "Any";
+    private Gender gender = Gender.ANY;
+    private Alignment alignment = Alignment.ANY;
 
     // Fields to handle the custom option for age
-    private AgeCategory ageCategory;
+    private AgeCategory ageCategory = AgeCategory.ANY;
     private String customAge;
     private String age;
     @Column(columnDefinition = "text")
     private String voice = "Any";
 
     // Fields to handle the custom option for occupation
-    private OccupationCategory occupationCategory;
+    private OccupationCategory occupationCategory = OccupationCategory.ANY;
     private String customOccupation;
     private String occupation;
 
-    private CharacterClass characterClass;
-    private CampaignStyle campaignStyle;
-    private List<String> themes;
-    private PlayerRelationship playerRelationship;
+    private CharacterClass characterClass = CharacterClass.ANY;
+    private CampaignStyle campaignStyle = CampaignStyle.HIGH_FANTASY;
+    private List<String> themes = campaignStyle.getThemes();;
+    private PlayerRelationship playerRelationship = PlayerRelationship.ANY;
     @Column(columnDefinition = "text")
     private String appearance = "Any";
     @Column(columnDefinition = "text")

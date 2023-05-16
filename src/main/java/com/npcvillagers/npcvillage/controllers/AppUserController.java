@@ -46,9 +46,9 @@ public class AppUserController {
 
     @GetMapping("/login")
     public String getLoginPage(Principal p) {
-//        if (p != null) {
-////            return "redirect:/";
-//        }
+        if (p != null) {
+            return "redirect:/";
+        }
         return "login.html";
     }
 
