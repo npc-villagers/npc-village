@@ -8,7 +8,7 @@
 <div th:fragment="npcForm">
     <form id="npcForm" th:action="${formAction}" th:method="${formMethod}" th:object="${npc}">
         <label for="name">Name</label>
-        <input type="text" id="name" th:value="${npc.name}" required>
+        <input type="text" id="name" th:value="${npc.name}" required onclick="this.select();" onfocus="this.select();">
 
         <label for="species">Species</label>
         <select id="species" required>
@@ -27,13 +27,34 @@
                     th:value="${gender.name()}" th:text="${gender.getDisplayName()}" />Gender</option>
         </select>
 
+        <label for="alignment">Alignment</label>
+        <select id="alignment" required>
+            <option th:each="alignment : ${T(com.npcvillagers.npcvillage.models.enums.Alignment).values()}"
+                    th:value="${alignment.name()}" th:text="${alignment.getDisplayName()}" />Alignment</option>
+        </select>
+
+        <label for="playerRelationship">Player Relationship</label>
+        <select id="playerRelationship" required>
+            <option th:each="playerRelationship : ${T(com.npcvillagers.npcvillage.models.enums.PlayerRelationship).values()}"
+                    th:value="${playerRelationship.name()}" th:text="${playerRelationship.getDisplayName()}" />Gender</option>
+        </select>
+
+        <label for="campaignStyle">Campaign Style</label>
+        <select id="campaignStyle" required>
+            <option th:each="campaignStyle : ${T(com.npcvillagers.npcvillage.models.enums.CampaignStyle).values()}"
+                    th:value="${campaignStyle.name()}" th:text="${campaignStyle.getDisplayName()}" />Campaign Style</option>
+        </select>
+
+        <label for="voice">Voice</label>
+        <input type="text" id="voice" th:value="${npc.voice}" required>
+
         <label for="age">Age</label>
         <select id="age" required>
             <option th:each="ageCategory : ${T(com.npcvillagers.npcvillage.models.enums.AgeCategory).values()}"
                     th:value="${ageCategory.name()}" th:text="${ageCategory.getDisplayName()}">Age</option>
         </select>
 
-        <div th:if="${npc.ageCategory == 'CUSTOM'}">
+        <div id="customAgeDiv" style="display: none;">
             <label for="customAge">Custom Age</label>
             <input type="text" id="customAge" th:value="${npc.customAge}">
         </div>
@@ -44,13 +65,31 @@
                     th:value="${occupationCategory.name()}" th:text="${occupationCategory.getDisplayName()}">Occupation</option>
         </select>
 
-        <div th:if="${npc.occupationCategory == 'CUSTOM'}">
-            <label for="customOccupation">Custom Occupation:</label>
+        <div id="customOccupationDiv" style="display: none;">
+            <label for="customOccupation">Custom Occupation</label>
             <input type="text" id="customOccupation" th:value="${npc.customOccupation}">
         </div>
 
-        <!-- Add other fields in the same way -->
-        <!-- ... -->
+        <label for="appearance">Appearance</label>
+        <input type="text" id="appearance" th:value="${npc.appearance}" required>
+
+        <label for="personality">Personality</label>
+        <input type="text" id="personality" th:value="${npc.personality}" required>
+
+        <label for="motivation">Motivation</label>
+        <input type="text" id="motivation" th:value="${npc.motivation}" required>
+
+        <label for="ideal">Ideal</label>
+        <input type="text" id="ideal" th:value="${npc.ideal}" required>
+
+        <label for="bond">Bond</label>
+        <input type="text" id="bond" th:value="${npc.bond}" required>
+
+        <label for="flaw">Flaw</label>
+        <input type="text" id="flaw" th:value="${npc.flaw}" required>
+
+        <label for="history">History</label>
+        <input type="text" id="history" th:value="${npc.history}" required>
 
         <input type="submit" th:value="${submitButtonText}" />
     </form>

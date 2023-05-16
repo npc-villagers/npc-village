@@ -1,6 +1,5 @@
 package com.npcvillagers.npcvillage.controllers;
 
-
 import com.npcvillagers.npcvillage.models.Npc;
 import com.npcvillagers.npcvillage.repos.AppUserRepository;
 import com.npcvillagers.npcvillage.repos.NpcRepository;
