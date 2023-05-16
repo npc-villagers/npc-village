@@ -10,11 +10,9 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.security.Principal;
 import java.util.Optional;
@@ -65,12 +63,13 @@ public class NpcController {
                     npcForm = npcFactory.createNpcForm(npc);
                     session.setAttribute("npcForm", npcForm);
                 }
-                System.out.println(npc.toString());
                 m.addAttribute("npcForm", npcForm);
                 m.addAttribute("npc", npc);
+
                 return "npcView";
             } else {
                 redir.addFlashAttribute("errorMessage", "NPC not found!");
+
                 return "redirect:/create";
             }
         } else {
@@ -85,15 +84,17 @@ public class NpcController {
             Npc npc = npcFactory.createNpc(npcForm);
             npcRepository.save(npc);  // save the npc to the database
             session.setAttribute("npcForm", npcForm);  // add npcForm to the session
+
             return "redirect:/create/" + npc.getId();  // redirect to the GET handler with the npc ID
         } else {
             redir.addFlashAttribute("errorMessage", "You must be logged in to create NPCs!");
+
             return "redirect:/login";
         }
     }
 
     @PostMapping("/saveToMyVillage")
-    public String saveNpc(NpcForm npcForm, Long npcId, HttpSession session, RedirectAttributes redir, Model m, Principal p) {
+    public String saveNpc(Long npcId, HttpSession session, RedirectAttributes redir, Model m, Principal p) {
         if (p != null) {
             AppUser appUser = appUserRepository.findByUsername(p.getName());
             Optional<Npc> createdNpc = npcRepository.findById(npcId);
@@ -103,17 +104,47 @@ public class NpcController {
                 npcRepository.save(npc);  // save the npc to the database
                 appUserRepository.save(appUser); // save the user to the database
 
-                npcForm = npcFactory.createNpcForm(npc);
-                session.setAttribute("npcForm", npcForm);  // add npcForm to the session
                 return "redirect:/create/" + npc.getId();  // redirect to the GET handler with the npc ID
             } else {
                 redir.addFlashAttribute("errorMessage", "NPC not found!");
+
                 return "redirect:/create";
             }
         } else {
             redir.addFlashAttribute("errorMessage", "You must be logged in to create NPCs!");
+
             return "redirect:/login";
         }
     }
+
+    @PutMapping("/myvillage/{id}")
+    public RedirectView updateNpc(@PathVariable Long id, RedirectAttributes redir) {
+        Npc npcToBeUpdated = npcRepository.findById(id).orElseThrow();
+
+        if (){
+            //update logic, process form data
+            npcRepository.save(npcToBeUpdated);
+        }
+        else {
+            redir.addFlashAttribute("errorMessage", "Can not update npc");
+        }
+        return new RedirectView("/myvillage");
+    }
+
+//
+//    @DeleteMapping("/myvillage/{id}")
+//    public RedirectView deleteNpc(@PathVariable Long id, RedirectAttributes redir) {
+//        Npc npcToDelete = NpcRepository.findById(id).orElseThrow();
+//
+//        if (p != null && p.getName().equals(npcToDelete.getNpc())){
+//            npcRepository.deleteById(id);
+//
+//            p = null;
+//        } else {
+//            redir.addFlashAttribute("errorMessage", "Cannot delete");
+//            return new RedirectView("/");
+//        }
+//        return new RedirectView("/");
+//    }
 
 }

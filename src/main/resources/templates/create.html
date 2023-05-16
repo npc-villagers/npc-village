@@ -13,6 +13,6 @@
 </header>
 <!--<div th:replace="/fragments/error :: error-page"></div>-->
 <h1>Create NPC</h1>
-<div th:replace="~{fragments/npcForm :: npcForm (formAction='/create', formMethod='post', submitButtonText='Create')}"></div>
+<div th:replace="~{fragments/npcForm :: npcForm(formAction='/create', formMethod='post', npcForm=${npcForm}, submitButtonText='Create')}"></div>
 </body>
 </html>
