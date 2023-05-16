@@ -1,5 +1,6 @@
 package com.npcvillagers.npcvillage.controllers;
 
+import com.npcvillagers.npcvillage.models.AppUser;
 import com.npcvillagers.npcvillage.models.Npc;
 import com.npcvillagers.npcvillage.models.NpcForm;
 import com.npcvillagers.npcvillage.repos.AppUserRepository;
@@ -22,7 +23,7 @@ import java.util.Optional;
 public class NpcController {
 
     @Autowired
-    AppUserRepository appUserRepo;
+    AppUserRepository appUserRepository;
 
     @Autowired
     NpcRepository npcRepository;
@@ -33,6 +34,8 @@ public class NpcController {
     @GetMapping("/create")
     public String getCreateDefault(Model m, Principal p, RedirectAttributes redir) {
         if (p != null) {
+            AppUser user = appUserRepository.findByUsername(p.getName());
+            m.addAttribute("username", user.getUsername());
             NpcForm npcForm = new NpcForm();
             m.addAttribute("npcForm", npcForm);
             return "create";
@@ -45,9 +48,16 @@ public class NpcController {
     @GetMapping("/create/{npcId}")
     public String getNpc(@PathVariable("npcId") Long npcId, Model m, Principal p, RedirectAttributes redir, HttpSession session) {
         if (p != null) {
+            AppUser appUser = appUserRepository.findByUsername(p.getName());
+            m.addAttribute("username", appUser.getUsername());
+
             Optional<Npc> createdNpc = npcRepository.findById(npcId);
             if (createdNpc.isPresent()) {
                 Npc npc = createdNpc.get();
+
+                // Check if the NPC is already saved in the village
+                boolean isSaved = appUser.getNpcs().contains(npc);
+                m.addAttribute("isSaved", isSaved);
 
                 // Get npcForm from session if available, or create a new one
                 NpcForm npcForm = (NpcForm) session.getAttribute("npcForm");
@@ -55,7 +65,7 @@ public class NpcController {
                     npcForm = npcFactory.createNpcForm(npc);
                     session.setAttribute("npcForm", npcForm);
                 }
-
+                System.out.println(npc.toString());
                 m.addAttribute("npcForm", npcForm);
                 m.addAttribute("npc", npc);
                 return "npcView";
@@ -82,5 +92,40 @@ public class NpcController {
         }
     }
 
+    @PostMapping("/saveToMyVillage")
+    public String saveNpc(NpcForm npcForm, Long npcId, HttpSession session, RedirectAttributes redir, Model m, Principal p) {
+        if (p != null) {
+            AppUser appUser = appUserRepository.findByUsername(p.getName());
+            Optional<Npc> createdNpc = npcRepository.findById(npcId);
+            if (createdNpc.isPresent()) {
+                Npc npc = createdNpc.get();
+                appUser.addNpc(npc);
+                npcRepository.save(npc);  // save the npc to the database
+                appUserRepository.save(appUser); // save the user to the database
 
+                npcForm = npcFactory.createNpcForm(npc);
+                session.setAttribute("npcForm", npcForm);  // add npcForm to the session
+                return "redirect:/create/" + npc.getId();  // redirect to the GET handler with the npc ID
+            } else {
+                redir.addFlashAttribute("errorMessage", "NPC not found!");
+                return "redirect:/create";
+            }
+        } else {
+            redir.addFlashAttribute("errorMessage", "You must be logged in to create NPCs!");
+            return "redirect:/login";
+        }
+    }
+
+    @GetMapping("/myVillage")
+    public String createNpc(Model m, Principal p, RedirectAttributes redir) {
+        if (p != null) {
+            AppUser user = appUserRepository.findByUsername(p.getName());
+            m.addAttribute("user", user);
+            m.addAttribute("username", user.getUsername());
+            return "myvillage";
+        } else {
+            redir.addFlashAttribute("errorMessage", "You must be logged in to see your Village!");
+            return "redirect:/login";
+        }
+    }
 }

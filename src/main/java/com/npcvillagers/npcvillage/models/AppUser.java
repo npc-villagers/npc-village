@@ -18,8 +18,8 @@ public class AppUser implements UserDetails {
     private String firstName;
     private String lastName;
 
-//    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
-//    private List<Npc> npc;
+    @OneToMany(mappedBy = "appUser", cascade = CascadeType.ALL)
+    private List<Npc> npcs;
 
     // Constructors
     public AppUser() {
@@ -33,6 +33,10 @@ public class AppUser implements UserDetails {
     }
 
 
+    public void addNpc(Npc npc) {
+        npc.setAppUser(this);
+        npcs.add(npc);
+    }
 
     public long getId() {
         return id;
@@ -97,6 +101,14 @@ public class AppUser implements UserDetails {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public List<Npc> getNpcs() {
+        return npcs;
+    }
+
+    public void setNpcs(List<Npc> npcs) {
+        this.npcs = npcs;
     }
 
     @Override

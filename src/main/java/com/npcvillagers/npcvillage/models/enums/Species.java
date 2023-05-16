@@ -121,7 +121,7 @@ public enum Species {
                 .collect(toList());
 
         if (filteredSubspecies.isEmpty()) {
-            return "Any";
+            return "Test";
         }
 
         Random rand = new Random();

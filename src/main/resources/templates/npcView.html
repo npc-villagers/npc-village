@@ -9,11 +9,15 @@
 </head>
 <body>
 <header>
-<!--  <nav th:replace="fragments/navbar :: navbar"></nav>-->
+  <nav th:replace="fragments/nav-header :: navbar"></nav>
 </header>
 <!--<div th:replace="/fragments/error :: error-page"></div>-->
 <h1>Create NPC</h1>
 <div th:replace="~{fragments/npcForm :: npcForm (formAction='/create', formMethod='post', submitButtonText='Create')}"></div>
 <div th:replace="~{fragments/npcStatBlock :: npcStatBlock(${npc})}"></div>
+<form action="/saveToMyVillage" method="POST" th:if="${!isSaved}">
+  <input type="hidden" name="npcId" th:value="${npc.id}">
+  <input type="submit" value="Add to Village">
+</form>
 </body>
 </html>
