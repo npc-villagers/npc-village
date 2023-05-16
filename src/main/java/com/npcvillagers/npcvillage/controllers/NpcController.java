@@ -116,16 +116,4 @@ public class NpcController {
         }
     }
 
-    @GetMapping("/myVillage")
-    public String createNpc(Model m, Principal p, RedirectAttributes redir) {
-        if (p != null) {
-            AppUser user = appUserRepository.findByUsername(p.getName());
-            m.addAttribute("user", user);
-            m.addAttribute("username", user.getUsername());
-            return "myvillage";
-        } else {
-            redir.addFlashAttribute("errorMessage", "You must be logged in to see your Village!");
-            return "redirect:/login";
-        }
-    }
 }

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Login</title>
+  <!--  <link rel="stylesheet" href="/css/styles.css">-->
+</head>
+<body>
+<header>
+  <nav th:replace="fragments/nav-header :: navbar"></nav>
+</header>
+<!--<div th:replace="/fragments/error :: error-page"></div>-->
+<h1>Your Village</h1>
+
+<div th:if="${npcs.isEmpty()}">
+  <p>Your village is empty! Explore <a href="/create">Create</a> to create some NPCs.</p>
+</div>
+
+<div th:if="${!npcs.isEmpty()}" class="npcs-container">
+  <div th:each="npc : ${npcs}">
+    <div th:if="${npc != null}" th:replace="~{fragments/npcStatBlock :: npcStatBlock(${npc})}"></div>
+  </div>
+</div>
+</body>
+</html>

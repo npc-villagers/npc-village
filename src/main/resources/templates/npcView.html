@@ -17,6 +17,7 @@
 <div th:replace="~{fragments/npcStatBlock :: npcStatBlock(${npc})}"></div>
 <form action="/saveToMyVillage" method="POST">
   <input type="hidden" name="npcId" th:value="${npc.id}">
+  <input type="hidden" name="npcForm" th:value="${npcForm}">
   <input type="submit" th:disabled="${isSaved}" th:value="${isSaved} ? 'Saved!' : 'Add to Village'">
 </form>
 </body>
