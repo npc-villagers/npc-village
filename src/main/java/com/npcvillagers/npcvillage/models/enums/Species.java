@@ -116,6 +116,10 @@ public enum Species {
             return "N/A";
         }
 
+        if (this.subspecies.size() == 1 && this.subspecies.get(0).equals("Any")) {
+            return "Any";
+        }
+
         List<String> subspeciesList = new ArrayList<>(this.subspecies);
         subspeciesList.remove("Any");
         Random rand = new Random();

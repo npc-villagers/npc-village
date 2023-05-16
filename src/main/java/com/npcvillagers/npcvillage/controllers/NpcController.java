@@ -1,8 +1,10 @@
 package com.npcvillagers.npcvillage.controllers;
 
 import com.npcvillagers.npcvillage.models.Npc;
+import com.npcvillagers.npcvillage.models.NpcForm;
 import com.npcvillagers.npcvillage.repos.AppUserRepository;
 import com.npcvillagers.npcvillage.repos.NpcRepository;
+import com.npcvillagers.npcvillage.services.NpcFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,12 +26,15 @@ public class NpcController {
     @Autowired
     NpcRepository npcRepository;
 
+    @Autowired
+    NpcFactory npcFactory;
+
     @GetMapping("/create")
     public String getCreateDefault(Model m, Principal p, RedirectAttributes redir) {
         System.out.println("I'm here");
         if (p != null) {
-            Npc npc = new Npc();
-            m.addAttribute("npc", npc);
+            NpcForm npcForm = new NpcForm();
+            m.addAttribute("npcForm", npcForm);
             return "create";
         } else {
             redir.addFlashAttribute("errorMessage", "You must be logged in to create NPCs!");
@@ -43,6 +48,9 @@ public class NpcController {
             Optional<Npc> createdNpc = npcRepository.findById(npcId);
             if (createdNpc.isPresent()) {
                 Npc npc = createdNpc.get();
+                if (!m.containsAttribute("npcForm")) {
+                    m.addAttribute("npcForm", npcFactory.createNpcForm(npc));
+                }
                 m.addAttribute("npc", npc);
                 return "npcView";
             } else {
@@ -50,37 +58,17 @@ public class NpcController {
                 return "redirect:/create";
             }
         } else {
-            redir.addFlashAttribute("errorMessage", "You must be logged in to view users!");
+            redir.addFlashAttribute("errorMessage", "You must be logged in to create NPCs!");
             return "redirect:/login";
         }
     }
 
     @PostMapping("/create")
-    public String createNpc(@ModelAttribute Npc npc, RedirectAttributes redir, Principal p) {
+    public String createNpc(@ModelAttribute NpcForm npcForm, RedirectAttributes redir, Principal p) {
         if (p != null) {
-            // Call the setters to randomize fields as necessary
-//            npc.setSpecies(npc.getSpecies());
-//            npc.setSubspecies(npc.getSubspecies());
-//            npc.setGender(npc.getGender());
-//            npc.setAlignment(npc.getAlignment());
-//            npc.setAgeCategory(npc.getAgeCategory());
-//            npc.setCustomAge(npc.getCustomAge());
-//            npc.setAge(npc.getAge());
-//            npc.setOccupationCategory(npc.getOccupationCategory());
-//            npc.setCustomOccupation(npc.getCustomOccupation());
-//            npc.setOccupation(npc.getOccupation());
-//            npc.setCharacterClass(npc.getCharacterClass());
-//            npc.setCampaignStyle(npc.getCampaignStyle());
-//            npc.setPlayerRelationship(npc.getPlayerRelationship());
-//            npc.setAppearance(npc.getAppearance());
-//            npc.setPersonality(npc.getPersonality());
-//            npc.setMotivation(npc.getMotivation());
-//            npc.setIdeal(npc.getIdeal());
-//            npc.setBond(npc.getBond());
-//            npc.setFlaw(npc.getFlaw());
-//            npc.setHistory(npc.getHistory());
-
+            Npc npc = npcFactory.createNpc(npcForm);
             npcRepository.save(npc);  // save the npc to the database
+            redir.addFlashAttribute("npcForm", npcForm);  // add npcForm as a flash attribute
             return "redirect:/create/" + npc.getId();  // redirect to the GET handler with the npc ID
         } else {
             redir.addFlashAttribute("errorMessage", "You must be logged in to create NPCs!");

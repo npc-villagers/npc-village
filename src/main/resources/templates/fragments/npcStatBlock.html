@@ -6,7 +6,24 @@
 </head>
 <body>
 <div th:fragment="npcStatBlock(npc)" class="stat-block">
-  <!-- ... -->
+  <p><strong>Name:</strong> <span th:text="${npc.name}"></span></p>
+  <p><strong>Species:</strong> <span th:text="${npc.species.getDisplayName()}"></span></p>
+  <p><strong>Subspecies:</strong> <span th:text="${npc.subspecies}"></span></p>
+  <p><strong>Gender:</strong> <span th:text="${npc.gender.getDisplayName()}"></span></p>
+  <p><strong>Alignment:</strong> <span th:text="${npc.alignment.getDisplayName()}"></span></p>
+  <p><strong>Player Relationship:</strong> <span th:text="${npc.playerRelationship.getDisplayName()}"></span></p>
+  <p><strong>Campaign Style:</strong> <span th:text="${npc.campaignStyle.getDisplayName()}"></span></p>
+  <p><strong>Voice:</strong> <span th:text="${npc.voice}"></span></p>
+  <p><strong>Age:</strong> <span th:text="${npc.age}"></span></p>
+  <p><strong>Occupation:</strong> <span th:text="${npc.occupation}"></span></p>
+  <p><strong>Character Class:</strong> <span th:text="${npc.characterClass.getDisplayName()}"></span></p>
+  <p><strong>Appearance:</strong> <span th:text="${npc.appearance}"></span></p>
+  <p><strong>Personality:</strong> <span th:text="${npc.personality}"></span></p>
+  <p><strong>Motivation:</strong> <span th:text="${npc.motivation}"></span></p>
+  <p><strong>Ideal:</strong> <span th:text="${npc.ideal}"></span></p>
+  <p><strong>Bond:</strong> <span th:text="${npc.bond}"></span></p>
+  <p><strong>Flaw:</strong> <span th:text="${npc.flaw}"></span></p>
+  <p><strong>History:</strong> <span th:text="${npc.history}"></span></p>
 </div>
 </body>
 </html>
