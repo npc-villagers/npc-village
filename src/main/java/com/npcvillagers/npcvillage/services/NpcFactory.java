@@ -98,4 +98,29 @@ public class NpcFactory {
         return form;
     }
 
+    public Npc updateNpc(NpcForm form, Npc npc) {
+
+        npc.setName(form.getName());
+        npc.setSpecies(form.getSpecies());
+        npc.setSubspecies(form.getSubspecies());
+        npc.setGender(form.getGender());
+        npc.setAlignment(form.getAlignment());
+        npc.setAgeCategory(form.getAgeCategory());
+        npc.setCustomAge(form.getCustomAge());
+        npc.setVoice(form.getVoice());
+        npc.setOccupationCategory(form.getOccupationCategory());
+        npc.setCustomOccupation(form.getCustomOccupation());
+        npc.setCharacterClass(form.getCharacterClass());
+        npc.setCampaignStyle(form.getCampaignStyle());
+        npc.setPlayerRelationship(form.getPlayerRelationship());
+        npc.setAppearance(form.getAppearance());
+        npc.setPersonality(form.getPersonality());
+        npc.setMotivation(form.getMotivation());
+        npc.setIdeal(form.getIdeal());
+        npc.setBond(form.getBond());
+        npc.setFlaw(form.getFlaw());
+        npc.setHistory(form.getHistory());
+
+        return npc;
+    }
 }

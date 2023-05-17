@@ -133,21 +133,4 @@ public class AppUserController {
         //let's bring users back to the homepage instead
         return new RedirectView("/");
     }
-
-    @GetMapping("/myvillage")
-    public String showMyVillage(Model m, Principal p, RedirectAttributes redir) {
-        if (p != null) {
-            AppUser user = appUserRepo.findByUsername(p.getName());
-            m.addAttribute("user", user);
-            m.addAttribute("username", user.getUsername());
-            List<Npc> npcs = user.getNpcs();
-            m.addAttribute("npcs", npcs);
-
-            return "myvillage";
-        } else {
-            redir.addFlashAttribute("errorMessage", "You must be logged in to see your village!");
-
-            return "redirect:/login";
-        }
-    }
 }

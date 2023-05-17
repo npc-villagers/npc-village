@@ -15,6 +15,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
 import java.security.Principal;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -117,24 +118,54 @@ public class NpcController {
         }
     }
 
-    @PutMapping("/myvillage/{npcId}")
-    public String editNpc(@PathVariable Long npcId, HttpSession session, RedirectAttributes redir, Model m, Principal p) {
+    @GetMapping({"/myvillage", "/myvillage/{npcId}"})
+    public String showMyVillage(@PathVariable(required = false) Long npcId, Model m, Principal p, RedirectAttributes redir) {
         if (p != null) {
-            AppUser appUser = appUserRepository.findByUsername(p.getName());
-            Npc npcToBeUpdated = npcRepository.findById(npcId).orElse(null);
-            if (npcToBeUpdated != null) {
-                NpcForm npcForm = npcFactory.createNpcForm(npcToBeUpdated);
-                session.setAttribute("npcForm", npcForm);
+            AppUser user = appUserRepository.findByUsername(p.getName());
+            m.addAttribute("user", user);
+            m.addAttribute("username", user.getUsername());
+            List<Npc> npcs = user.getNpcs();
+            m.addAttribute("npcs", npcs);
 
+            // If npcId is provided, find that NPC and add it to the model
+            if (npcId != null) {
+                Npc npc = npcRepository.findById(npcId).orElse(null);
+                if (npc != null) {
+                    m.addAttribute("npc", npc);
+                    NpcForm npcForm = npcFactory.createNpcForm(npc);
+                    m.addAttribute("npcForm", npcForm);
+                } else {
+                    redir.addFlashAttribute("errorMessage", "NPC not found!");
+                }
 
-                return "redirect:/create/" + npcToBeUpdated.getId();  // redirect to the GET handler with the npc ID
+                return "redirect:/myvillage/" + npcId;
+            }
+
+            return "redirect:/myvillage/";
+        } else {
+            redir.addFlashAttribute("errorMessage", "You must be logged in to see your village!");
+
+            return "redirect:/login";
+        }
+    }
+
+    @PutMapping("/updateNpc/{npcId}")
+    public String updateNpc(@ModelAttribute NpcForm npcForm, @PathVariable Long npcId, RedirectAttributes redir, Principal p) {
+        if (p != null) {
+            Npc npctoUpdate = npcRepository.findById(npcId).orElse(null);
+
+            if (npctoUpdate != null) {
+                npctoUpdate = npcFactory.updateNpc(npcForm, npctoUpdate);
+                npcRepository.save(npctoUpdate);  // save the updated npc to the database
+
+                return "redirect:/myvillage";
             } else {
                 redir.addFlashAttribute("errorMessage", "NPC not found!");
 
-                return "redirect:/myvillage";
+                return "redirect:/create";
             }
         } else {
-            redir.addFlashAttribute("errorMessage", "You must be logged in to create NPCs!");
+            redir.addFlashAttribute("errorMessage", "You must be logged in to edit NPCs!");
 
             return "redirect:/login";
         }

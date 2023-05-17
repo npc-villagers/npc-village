@@ -18,15 +18,20 @@
   <p>Your village is empty! Explore <a href="/create">Create</a> to create some NPCs.</p>
 </div>
 
+<div th:if="${npcForm != null}">
+  <div th:replace="~{fragments/npcForm :: npcForm(formAction=@{/myvillage/{npcId}(npcId=*{id})}, formMethod='PUT', npcForm=${npcForm}, submitButtonText='Update NPC')}"></div>
+
+</div>
+
 <div th:if="${!npcs.isEmpty()}" class="npcs-container">
   <div th:each="npc : ${npcs}">
     <div th:if="${npc != null}" th:replace="~{fragments/npcStatBlock :: npcStatBlock(${npc})}"></div>
-    <form action="/myvillage/{npc.id}" th:method="PUT">
+    <form th:action="@{/myvillage/{npcId}(npcId=${npc.id})}" th:method="GET">
       <input type="hidden" name="npcId" th:value="${npc.id}">
       <input type="submit" value="Edit">
     </form>
 
-    <form th:action="@{/myvillage/{npcId}(npcId=${npc.id})}" method="post">
+    <form th:action="@{/myvillage/{npcId}(npcId=${npc.id})}" method="POST">
       <input type="hidden" name="_method" value="delete" />
       <input type="submit" value="Delete">
     </form>
