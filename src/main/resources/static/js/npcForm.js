@@ -7,14 +7,18 @@ function loadSubspecies(speciesName) {
             let subspeciesSelect = document.getElementById('subspecies');
             subspeciesSelect.options.length = 0; // remove any existing options
             let savedSubspecies = subspeciesSelect.getAttribute('data-saved-value');
+            let filterAny = subspeciesSelect.getAttribute('data-filter-any') === 'true';
 
             response.data.forEach(subspecies => {
-                let option = document.createElement('option');
-                option.text = subspecies;
-                option.value = subspecies;
-                subspeciesSelect.add(option);
-                if (option.value === savedSubspecies) {
-                    option.selected = true;
+                // Add conditional check for "Any" subspecies
+                if (!filterAny || (filterAny && subspecies !== 'Any')) {
+                    let option = document.createElement('option');
+                    option.text = subspecies;
+                    option.value = subspecies;
+                    subspeciesSelect.add(option);
+                    if (option.value === savedSubspecies) {
+                        option.selected = true;
+                    }
                 }
             });
 
@@ -71,6 +75,10 @@ window.addEventListener('load', function() {
 
         input.addEventListener('focus', handler);
     });
+
+    // In the case of our edit form, we have custom as the first option, so we want to call these methods on page load to check their initial value
+    toggleCustomAge()
+    toggleCustomOccupation()
 });
 
 // Add event listeners to update the subspecies option, and conditionally display custom age and occupation options

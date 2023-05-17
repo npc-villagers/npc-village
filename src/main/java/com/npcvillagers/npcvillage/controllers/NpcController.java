@@ -118,8 +118,8 @@ public class NpcController {
         }
     }
 
-    @GetMapping({"/myvillage", "/myvillage/{npcId}"})
-    public String showMyVillage(@PathVariable(required = false) Long npcId, Model m, Principal p, RedirectAttributes redir) {
+    @GetMapping("/myvillage")
+    public String showMyVillage(Model m, Principal p, RedirectAttributes redir) {
         if (p != null) {
             AppUser user = appUserRepository.findByUsername(p.getName());
             m.addAttribute("user", user);
@@ -127,24 +127,34 @@ public class NpcController {
             List<Npc> npcs = user.getNpcs();
             m.addAttribute("npcs", npcs);
 
-            // If npcId is provided, find that NPC and add it to the model
-            if (npcId != null) {
-                Npc npc = npcRepository.findById(npcId).orElse(null);
-                if (npc != null) {
-                    m.addAttribute("npc", npc);
-                    NpcForm npcForm = npcFactory.createNpcForm(npc);
-                    m.addAttribute("npcForm", npcForm);
-                } else {
-                    redir.addFlashAttribute("errorMessage", "NPC not found!");
-                }
-
-                return "redirect:/myvillage/" + npcId;
-            }
-
-            return "redirect:/myvillage/";
+            return "myvillage";  // Return the view name
         } else {
             redir.addFlashAttribute("errorMessage", "You must be logged in to see your village!");
+            return "redirect:/login";
+        }
+    }
 
+    @GetMapping("/myvillage/{npcId}")
+    public String showMyVillage(@PathVariable Long npcId, Model m, Principal p, RedirectAttributes redir) {
+        if (p != null) {
+            AppUser user = appUserRepository.findByUsername(p.getName());
+            m.addAttribute("user", user);
+            m.addAttribute("username", user.getUsername());
+            List<Npc> npcs = user.getNpcs();
+            m.addAttribute("npcs", npcs);
+
+            Npc npc = npcRepository.findById(npcId).orElse(null);
+            if (npc != null) {
+                m.addAttribute("npc", npc);
+                NpcForm npcForm = npcFactory.createNpcForm(npc);
+                m.addAttribute("npcForm", npcForm);
+                return "myvillage";  // Return the view name with npcForm
+            } else {
+                redir.addFlashAttribute("errorMessage", "NPC not found!");
+                return "redirect:/myvillage";
+            }
+        } else {
+            redir.addFlashAttribute("errorMessage", "You must be logged in to see your village!");
             return "redirect:/login";
         }
     }
@@ -157,26 +167,23 @@ public class NpcController {
             if (npctoUpdate != null) {
                 npctoUpdate = npcFactory.updateNpc(npcForm, npctoUpdate);
                 npcRepository.save(npctoUpdate);  // save the updated npc to the database
-
-                return "redirect:/myvillage";
+                return "redirect:/myvillage";  // Redirect to the my village page
             } else {
                 redir.addFlashAttribute("errorMessage", "NPC not found!");
-
                 return "redirect:/create";
             }
         } else {
             redir.addFlashAttribute("errorMessage", "You must be logged in to edit NPCs!");
-
             return "redirect:/login";
         }
     }
 
     @DeleteMapping("/myvillage/{npcId}")
     public RedirectView deleteNpc(@PathVariable Long npcId, RedirectAttributes redir) {
-        Optional<Npc> npcToBeDeleted = npcRepository.findById(npcId);
+        Npc npcToBeDeleted = npcRepository.findById(npcId).orElse(null);
 
-        if (npcToBeDeleted.isPresent()) {
-            npcRepository.delete(npcToBeDeleted.get());
+        if (npcToBeDeleted != null) {
+            npcRepository.delete(npcToBeDeleted);
         } else {
             redir.addFlashAttribute("errorMessage", "NPC not found!");
         }

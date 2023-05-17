@@ -19,8 +19,7 @@
 </div>
 
 <div th:if="${npcForm != null}">
-  <div th:replace="~{fragments/npcForm :: npcForm(formAction=@{/myvillage/{npcId}(npcId=*{id})}, formMethod='PUT', npcForm=${npcForm}, submitButtonText='Update NPC')}"></div>
-
+  <div th:replace="~{fragments/editNpcForm :: npcForm(formAction=@{/updateNpc/{npcId}(npcId=${npcId})}, formMethod='PUT', npcForm=${npcForm}, submitButtonText='Update NPC')}"></div>
 </div>
 
 <div th:if="${!npcs.isEmpty()}" class="npcs-container">
