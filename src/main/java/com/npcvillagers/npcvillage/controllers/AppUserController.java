@@ -2,6 +2,7 @@ package com.npcvillagers.npcvillage.controllers;
 
 
 import com.npcvillagers.npcvillage.models.AppUser;
+import com.npcvillagers.npcvillage.models.Npc;
 import com.npcvillagers.npcvillage.repos.AppUserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import jakarta.servlet.ServletException;
 
 import java.security.Principal;
+import java.util.List;
 
 
 @Controller
@@ -133,5 +135,4 @@ public class AppUserController {
         //let's bring users back to the homepage instead
         return new RedirectView("/logout");
     }
-
 }
