@@ -37,7 +37,7 @@ public class NpcController {
             m.addAttribute("username", user.getUsername());
             NpcForm npcForm = new NpcForm();
             String username = p.getName();
-            AppUser loggedInUser = appUserRepo.findByUsername(username);
+            AppUser loggedInUser = appUserRepository.findByUsername(username);
             if (loggedInUser != null) {
                m.addAttribute("username", username);
             }

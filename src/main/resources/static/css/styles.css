@@ -1,0 +1,11 @@
+
+#navbarNav {
+display: flex;
+justify: space-between;
+}
+
+li {
+text-decoration: none;
+color: red;
+}
+

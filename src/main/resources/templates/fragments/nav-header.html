@@ -1,32 +1,44 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.1.0/css/bootstrap.min.css}" />
+
 </head>
 <body>
 <div th:fragment="navbar">
-  <nav>
-    <a href="/">Home</a>
-    <span th:if="${username}">
-                | <span class="username">Welcome, <span th:text="${username}"></span></span>
-                | <a href="/create">Create NPC</a>
-                | <a href="/myvillage">My Village</a>
-                | <a href="/profile">My Profile</a>
-                | <a href="/logout">Logout</a>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+<!--        <a class="navbar-brand" href="/">My App</a>-->
+<!--        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">-->
+<!--            <span class="navbar-toggler-icon"></span>-->
+<!--        </button>-->
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav" >
+                <li class="nav-item" th:if="${username}">
+                    <a class="nav-link" href="/">Home</a>
+                </li>
+                <li class="nav-item" th:if="${username}">
+                    <a class="nav-link" href="/create">Create NPC</a>
+                </li>
+                <li class="nav-item" th:if="${username}">
+                    <a class="nav-link" href="/myvillage">My Village</a>
+                </li>
+                <li class="nav-item" th:if="${username}">
+                    <a class="nav-link" href="/profile">My Profile</a>
+                </li>
+                <li class="nav-item" th:if="${username}">
+                    <a class="nav-link" href="/logout">Logout</a>
+                </li>
 
-<!--                | action="/logout" method="post" style="display:inline;">-->
-<!--                    <input type="submit" value="Logout">-->
-<!--                </form>-->
-            </span>
-    <span th:unless="${username}">
-                | <a href="/login">Login</a>
-                | <a href="/signup">Sign up</a>
-            </span>
-<!--      <span th:if="!${username}">-->
-<!--          | <a href-->
-<!--      </span>-->
-
-  </nav>
+                <li class="nav-item" th:unless="${username}">
+                    <a class="nav-link" href="/login">Login</a>
+                </li>
+                <li class="nav-item" th:unless="${username}">
+                    <a class="nav-link" href="/signup">Sign up</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
 </div>
 </body>
 </html>
