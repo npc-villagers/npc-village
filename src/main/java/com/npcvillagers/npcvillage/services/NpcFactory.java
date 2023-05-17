@@ -1,10 +1,14 @@
 package com.npcvillagers.npcvillage.services;
 
-import com.npcvillagers.npcvillage.models.AppUser;
+import com.google.gson.*;
 import com.npcvillagers.npcvillage.models.Npc;
 import com.npcvillagers.npcvillage.models.NpcForm;
 import com.npcvillagers.npcvillage.models.enums.*;
+import com.npcvillagers.npcvillage.utils.CustomEnumTypeAdapter;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class NpcFactory {
@@ -13,12 +17,12 @@ public class NpcFactory {
         // Convert the NpcForm to an Npc and return it.
         Npc npc = new Npc();
 
-        npc.setName(form.getName());
+        npc.setName(form.getName().isEmpty() ? "Any" : form.getName());
 
         // If the form species starts with ANY, then get a random species, otherwise set the species to the form value
         Species formSpecies = form.getSpecies();
         npc.setSpecies(formSpecies.name().startsWith("ANY") ? formSpecies.getRandomSpecies() : formSpecies);
-        System.out.println(npc.getSpecies());
+
         // We do the same sort of thing for any dropdown field that has an "Any" option
         String formSubspecies = form.getSubspecies();
         npc.setSubspecies("Any".equals(formSubspecies) ? npc.getSpecies().getRandomSubspecies() : formSubspecies);
@@ -37,7 +41,7 @@ public class NpcFactory {
         // The actual age field is dependent on whether the user has entered a custom age
         npc.setAge(formAgeCategory == AgeCategory.CUSTOM ? formCustomAge : npc.getAgeCategory().getDisplayName());
 
-        npc.setVoice(form.getVoice());
+        npc.setVoice(form.getVoice().isEmpty() ? "Any" : form.getVoice());
 
         OccupationCategory formOccupationCategory = form.getOccupationCategory();
         npc.setOccupationCategory(formOccupationCategory == OccupationCategory.ANY ? formOccupationCategory.getRandomOccupation() : formOccupationCategory);
@@ -58,13 +62,13 @@ public class NpcFactory {
         PlayerRelationship formPlayerRelationship = form.getPlayerRelationship();
         npc.setPlayerRelationship(formPlayerRelationship == PlayerRelationship.ANY ? formPlayerRelationship.getRandomPlayerRelationship() : formPlayerRelationship);
 
-        npc.setAppearance(form.getAppearance());
-        npc.setPersonality(form.getPersonality());
-        npc.setMotivation(form.getMotivation());
-        npc.setIdeal(form.getIdeal());
-        npc.setBond(form.getBond());
-        npc.setFlaw(form.getFlaw());
-        npc.setHistory(form.getHistory());
+        npc.setAppearance(form.getAppearance().isEmpty() ? "Any" : form.getAppearance());
+        npc.setPersonality(form.getPersonality().isEmpty() ? "Any" : form.getPersonality());
+        npc.setMotivation(form.getMotivation().isEmpty() ? "Any" : form.getMotivation());
+        npc.setIdeal(form.getIdeal().isEmpty() ? "Any" : form.getIdeal());
+        npc.setBond(form.getBond().isEmpty() ? "Any" : form.getBond());
+        npc.setFlaw(form.getFlaw().isEmpty() ? "Any" : form.getFlaw());
+        npc.setHistory(form.getHistory().isEmpty() ? "Any" : form.getHistory());
 
         return npc;
     }
@@ -121,5 +125,111 @@ public class NpcFactory {
         npc.setHistory(form.getHistory());
 
         return npc;
+    }
+
+    // This method takes in an NpcJson object and returns a string that's formatted like JSON for our message to ChatGPT
+    public String toPrettyJsonString(Npc npc) {
+        // Create the Gson object. setPrettyPrinting() enables pretty printing.
+        Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
+        // Create a new NpcJson object from this Npc, and convert it to a JSON string
+        String jsonString = gson.toJson(new NpcJson(npc));
+        // Replace escaped quotes with actual quotes
+        jsonString = jsonString.replace("\\\"", "\"");
+
+        return jsonString;
+    }
+
+    /* The approach of this method is fairly brittle due to how we get information from ChatGPT. Basically, we want only certain fields generated from GPT to reduce response time, so we serialize the existing NPC to a JSON object, then serialize ChatGPT's response and merge the fields that are not nullish into our original Npc. We then deserialize the merged JSON into a java object.
+
+    In addition, ChatGPT will not consistently return the enums in a way that gson can automatically parse them, i.e., with their name field. We use the displayName() method for each enum as a custom type adapter so that gson knows what to look for in our deserialization.
+    */
+    public Npc updateNpcFromContent(Npc npcToUpdate, String content) {
+        try {
+            Gson gson = new GsonBuilder()
+                    .registerTypeAdapter(CampaignStyle.class, new CustomEnumTypeAdapter<>(CampaignStyle.class))
+                    .registerTypeAdapter(Gender.class, new CustomEnumTypeAdapter<>(Gender.class))
+                    .registerTypeAdapter(PlayerRelationship.class, new CustomEnumTypeAdapter<>(PlayerRelationship.class))
+                    .registerTypeAdapter(Species.class, new CustomEnumTypeAdapter<>(Species.class))
+                    .disableHtmlEscaping()
+                    .create();
+
+            // Convert existing NPC to a JSON object
+            JsonObject existingJson = JsonParser.parseString(gson.toJson(npcToUpdate)).getAsJsonObject();
+
+            // Parse the content to a JsonElement
+            JsonElement newElement = JsonParser.parseString(content);
+
+            JsonObject newJson;
+
+            // Check whether the JsonElement is a JSON array or a JSON object. This is not guaranteed one way or the other from ChatGPT's responses.
+            if (newElement.isJsonObject()) {
+                newJson = newElement.getAsJsonObject();
+            } else if (newElement.isJsonArray() && newElement.getAsJsonArray().size() > 0) {
+                newJson = newElement.getAsJsonArray().get(0).getAsJsonObject();
+            } else {
+                throw new IllegalArgumentException("Failed to update NPC using ChatGPT: ChatGPT's response does not contain any valid NPCs");
+            }
+
+            // Merge the new JSON object into the existing one
+            for (Map.Entry<String, JsonElement> entry : newJson.entrySet()) {
+                if (!entry.getValue().isJsonNull()) {
+                    existingJson.add(entry.getKey(), entry.getValue());
+                }
+            }
+
+            // Deserialize the merged JSON object back into the NPC object
+            npcToUpdate = gson.fromJson(existingJson, Npc.class);
+
+        } catch (JsonSyntaxException e) {
+            // Handle the exceptions here
+            throw new IllegalArgumentException("Failed to update NPC using ChatGPT: " + e.getMessage());
+        }
+
+        return npcToUpdate;
+    }
+
+    // Define a temporary class in the factory that contains only the fields we want in our JSON formatted String given to ChatGPT as input
+    private class NpcJson {
+        String name;
+        String species;
+        String subspecies;
+        String gender;
+        String alignment;
+        String age;
+        String voice;
+        String occupation;
+        String characterClass;
+        String campaignStyle;
+        List<String> themes;
+        String playerRelationship;
+        String appearance;
+        String personality;
+        String motivation;
+        String ideal;
+        String bond;
+        String flaw;
+        String history;
+
+        NpcJson(Npc npc) {
+            this.name = npc.getName();
+            this.species = npc.getSpecies().getDisplayName();
+            this.subspecies = npc.getSubspecies();
+            this.gender = npc.getGender().getDisplayName();
+            this.alignment = npc.getAlignment().getDisplayName();
+            this.age = npc.getAge();
+            this.voice = npc.getVoice();
+            this.occupation = npc.getOccupation();
+            this.characterClass = npc.getCharacterClass().getDisplayName();
+            this.campaignStyle = npc.getCampaignStyle().getDisplayName();
+            this.themes = npc.getThemes();
+            this.playerRelationship = npc.getPlayerRelationship().getDisplayName();
+            this.appearance = npc.getAppearance();
+            this.personality = npc.getPersonality();
+            this.motivation = npc.getMotivation();
+            this.ideal = npc.getIdeal();
+            this.bond = npc.getBond();
+            this.flaw = npc.getFlaw();
+            this.history = npc.getHistory();
+        }
     }
 }
