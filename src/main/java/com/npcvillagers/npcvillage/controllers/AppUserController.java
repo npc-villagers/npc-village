@@ -39,7 +39,8 @@ public class AppUserController {
             AppUser user = appUserRepo.findByUsername(username);
 
             m.addAttribute("username", username);
-        }
+        } else
+        throw new RuntimeException("It's a 404!");
         return "index.html";
     }
 
@@ -85,6 +86,7 @@ public class AppUserController {
     public String getMyProfile(Model m, Principal p) {
         if(p != null) { //not strictly needed if WebSecurityConfig is set up properly
             AppUser user = appUserRepo.findByUsername(p.getName());
+            m.addAttribute("id", user.getId());
             m.addAttribute("user", user);
             m.addAttribute("username", user.getUsername());
             return "profile";
@@ -113,7 +115,7 @@ public class AppUserController {
     }
 
     //METHOD FOR DELETING A USER
-    @DeleteMapping("/user/{id}")
+    @DeleteMapping("/profile/{id}")
     public RedirectView deleteUser(@PathVariable Long id, Principal p, RedirectAttributes redir) {
         //delete
         AppUser userToDelete = appUserRepo.findById(id).orElseThrow();
@@ -126,11 +128,11 @@ public class AppUserController {
             //if a user isn't authorized to delete and they press the button
             //flash an error and keep them on the same page
             redir.addFlashAttribute("errorMessage", "Cannot delete another user's account!");
-            return new RedirectView("/user/"+id);
+            return new RedirectView("/profile/"+id);
         }
 
         //with a void return type we would just return an error page after delete is completed
         //let's bring users back to the homepage instead
-        return new RedirectView("/");
+        return new RedirectView("/logout");
     }
 }
