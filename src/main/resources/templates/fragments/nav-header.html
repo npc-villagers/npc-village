@@ -9,7 +9,7 @@
     <a href="/">Home</a>
     <span th:if="${username}">
                 | <span class="username">Welcome, <span th:text="${username}"></span></span>
-<!--                | <a href="/create">Create NPC</a>-->
+                | <a href="/create">Create NPC</a>
 <!--                | <a href="/village">My Village</a>-->
                 | <a href="/profile">My Profile</a>
                 | <a href="/logout">Logout</a>
@@ -22,6 +22,10 @@
                 | <a href="/login">Login</a>
                 | <a href="/signup">Sign up</a>
             </span>
+<!--      <span th:if="!${username}">-->
+<!--          | <a href-->
+<!--      </span>-->
+
   </nav>
 </div>
 </body>
