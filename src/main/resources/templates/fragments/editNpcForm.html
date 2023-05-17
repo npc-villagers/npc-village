@@ -91,6 +91,15 @@
             <input type="text" id="customOccupation" name="customOccupation" th:value="${npcForm.customOccupation}">
         </div>
 
+        <label for="characterClass">Character Class</label>
+        <select id="characterClass"  name="characterClass" required>
+            <option th:each="characterClass : ${T(com.npcvillagers.npcvillage.models.enums.CharacterClass).values()}"
+                    th:if="${!characterClass.name().startsWith('ANY')}"
+                    th:value="${characterClass.name()}"
+                    th:text="${characterClass.getDisplayName()}"
+                    th:selected="${characterClass.name() == npcForm.characterClass.name()}">Character Class</option>
+        </select>
+
         <label for="appearance">Appearance</label>
         <input type="text" id="appearance" name="appearance" th:value="${npcForm.appearance}" required>
 

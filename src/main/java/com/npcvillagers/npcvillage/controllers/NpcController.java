@@ -6,6 +6,7 @@ import com.npcvillagers.npcvillage.models.NpcForm;
 import com.npcvillagers.npcvillage.repos.AppUserRepository;
 import com.npcvillagers.npcvillage.repos.NpcRepository;
 import com.npcvillagers.npcvillage.services.NpcFactory;
+import com.npcvillagers.npcvillage.services.OpenAiApiHandler;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,6 +30,9 @@ public class NpcController {
 
     @Autowired
     NpcFactory npcFactory;
+
+    @Autowired
+    OpenAiApiHandler openAiApiHandler;
 
     @GetMapping("/create")
     public String getCreateDefault(Model m, Principal p, RedirectAttributes redir) {
@@ -88,6 +92,7 @@ public class NpcController {
     public String createNpc(@ModelAttribute NpcForm npcForm, HttpSession session, RedirectAttributes redir, Principal p) {
         if (p != null) {
             Npc npc = npcFactory.createNpc(npcForm);
+            npc = openAiApiHandler.processNpc(npc);
             npcRepository.save(npc);  // save the npc to the database
             session.setAttribute("npcForm", npcForm);  // add npcForm to the session
 
