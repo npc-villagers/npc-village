@@ -9,3 +9,13 @@ text-decoration: none;
 color: red;
 }
 
+#card-name {
+ font-family: "Roboto", serif;
+
+}
+
+.card-title  {
+ font-family:"fantasy";
+ font:bold;
+
+ }
