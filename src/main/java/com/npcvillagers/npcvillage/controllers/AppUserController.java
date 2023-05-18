@@ -39,8 +39,7 @@ public class AppUserController {
             AppUser user = appUserRepo.findByUsername(username);
 
             m.addAttribute("username", username);
-        } else
-            throw new RuntimeException("It's a 404!");
+        }
         return "index.html";
     }
 
