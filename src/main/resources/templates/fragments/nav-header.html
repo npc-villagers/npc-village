@@ -29,12 +29,18 @@
                 <li class="nav-item" th:if="${username}">
                     <a class="nav-link" href="/logout">Logout</a>
                 </li>
+                <li class="nav-item" th:if="${username}">
+                    <a class="nav-link" href="/ourteam">Our Team</a>
+                </li>
 
                 <li class="nav-item" th:unless="${username}">
                     <a class="nav-link" href="/login">Login</a>
                 </li>
                 <li class="nav-item" th:unless="${username}">
                     <a class="nav-link" href="/signup">Sign up</a>
+                </li>
+                <li class="nav-item" th:unless="${username}">
+                    <a class="nav-link" href="/ourTeam">Our Team</a>
                 </li>
             </ul>
         </div>
