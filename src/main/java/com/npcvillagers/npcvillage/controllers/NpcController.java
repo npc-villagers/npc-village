@@ -8,14 +8,12 @@ import com.npcvillagers.npcvillage.repos.AppUserRepository;
 import com.npcvillagers.npcvillage.repos.NpcRepository;
 import com.npcvillagers.npcvillage.repos.TaskRepository;
 import com.npcvillagers.npcvillage.services.NpcFactory;
-import com.npcvillagers.npcvillage.services.OpenAiApiHandler;
 import com.npcvillagers.npcvillage.services.TaskService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -35,9 +33,6 @@ public class NpcController {
 
     @Autowired
     NpcFactory npcFactory;
-
-    @Autowired
-    OpenAiApiHandler openAiApiHandler;
 
     @Autowired
     TaskService taskService;
@@ -71,10 +66,9 @@ public class NpcController {
             AppUser appUser = appUserRepository.findByUsername(p.getName());
             m.addAttribute("username", appUser.getUsername());
 
-            Optional<Npc> createdNpc = npcRepository.findById(npcId);
-            if (createdNpc.isPresent()) {
-                Npc npc = createdNpc.get();
+            Npc npc = npcRepository.findById(npcId).orElse(null);
 
+            if (npc != null) {
                 // Check if the NPC is already saved in the village
                 boolean isSaved = appUser.getNpcs().contains(npc);
                 m.addAttribute("isSaved", isSaved);
@@ -143,9 +137,8 @@ public class NpcController {
     public String saveNpc(Long npcId, HttpSession session, RedirectAttributes redir, Model m, Principal p) {
         if (p != null) {
             AppUser appUser = appUserRepository.findByUsername(p.getName());
-            Optional<Npc> createdNpc = npcRepository.findById(npcId);
-            if (createdNpc.isPresent()) {
-                Npc npc = createdNpc.get();
+            Npc npc = npcRepository.findById(npcId).orElse(null);
+            if (npc != null) {
                 appUser.addNpc(npc);
                 npcRepository.save(npc);  // save the npc to the database
                 appUserRepository.save(appUser); // save the user to the database
@@ -166,9 +159,8 @@ public class NpcController {
     @GetMapping("/checkStatus/{taskId}")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> checkStatus(@PathVariable Long taskId) {
-        Optional<Task> taskOptional = taskRepository.findById(taskId);
-        if (taskOptional.isPresent()) {
-            Task task = taskOptional.get();
+        Task task = taskRepository.findById(taskId).orElse(null);
+        if (task != null) {
             Map<String, Object> data = new HashMap<>();
             data.put("completed", task.isCompleted());
             data.put("npcId", task.getNpc().getId());
