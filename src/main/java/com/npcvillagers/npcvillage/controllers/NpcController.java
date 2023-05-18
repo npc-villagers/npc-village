@@ -251,7 +251,7 @@ public class NpcController {
 
         if (npcToBeDeleted != null) {
             // fetch and delete the associated Task if it exists
-            Task task = npcToBeDeleted.getTask();
+            Task task = taskRepository.findByNpcId(npcId);
             if (task != null) {
                 taskRepository.delete(task);
             }
