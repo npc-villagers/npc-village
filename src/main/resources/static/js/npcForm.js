@@ -34,7 +34,7 @@ function loadSubspecies(speciesName) {
 
 // This function shows or hides the customAge field based on the selected age
 function toggleCustomAge() {
-    let ageSelect = document.getElementById('age');
+    let ageSelect = document.getElementById('ageCategory');
     let customAge = document.getElementById('customAgeDiv');
     if (ageSelect.value === 'CUSTOM') {
         customAge.style.display = 'block';
@@ -45,7 +45,7 @@ function toggleCustomAge() {
 
 // This function shows or hides the customOccupation field based on the selected occupation
 function toggleCustomOccupation() {
-    let occupationSelect = document.getElementById('occupation');
+    let occupationSelect = document.getElementById('occupationCategory');
     let customOccupation = document.getElementById('customOccupationDiv');
     if (occupationSelect.value === 'CUSTOM') {
         customOccupation.style.display = 'block';

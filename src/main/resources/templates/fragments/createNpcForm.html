@@ -58,8 +58,8 @@
         <label for="voice">Voice</label>
         <input type="text" id="voice" name="voice" th:value="${npcForm.voice}" required>
 
-        <label for="age">Age</label>
-        <select id="age" name="age" required>
+        <label for="ageCategory">Age</label>
+        <select id="ageCategory" name="ageCategory" required>
             <option th:each="ageCategory : ${T(com.npcvillagers.npcvillage.models.enums.AgeCategory).values()}"
                     th:value="${ageCategory.name()}"
                     th:text="${ageCategory.getDisplayName()}"
@@ -71,8 +71,8 @@
             <input type="text" id="customAge" name="customAge" th:value="${npcForm.customAge}">
         </div>
 
-        <label for="occupation">Occupation</label>
-        <select id="occupation"  name="occupation" required>
+        <label for="occupationCategory">Occupation</label>
+        <select id="occupationCategory"  name="occupationCategory" required>
             <option th:each="occupationCategory : ${T(com.npcvillagers.npcvillage.models.enums.OccupationCategory).values()}"
                     th:value="${occupationCategory.name()}"
                     th:text="${occupationCategory.getDisplayName()}"

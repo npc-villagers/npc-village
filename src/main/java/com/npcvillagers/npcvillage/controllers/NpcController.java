@@ -3,21 +3,26 @@ package com.npcvillagers.npcvillage.controllers;
 import com.npcvillagers.npcvillage.models.AppUser;
 import com.npcvillagers.npcvillage.models.Npc;
 import com.npcvillagers.npcvillage.models.NpcForm;
+import com.npcvillagers.npcvillage.models.Task;
 import com.npcvillagers.npcvillage.repos.AppUserRepository;
 import com.npcvillagers.npcvillage.repos.NpcRepository;
+import com.npcvillagers.npcvillage.repos.TaskRepository;
 import com.npcvillagers.npcvillage.services.NpcFactory;
 import com.npcvillagers.npcvillage.services.OpenAiApiHandler;
+import com.npcvillagers.npcvillage.services.TaskService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
 import java.security.Principal;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Controller
 public class NpcController {
@@ -34,6 +39,12 @@ public class NpcController {
     @Autowired
     OpenAiApiHandler openAiApiHandler;
 
+    @Autowired
+    TaskService taskService;
+
+    @Autowired
+    TaskRepository taskRepository;
+
     @GetMapping("/create")
     public String getCreateDefault(Model m, Principal p, RedirectAttributes redir) {
         if (p != null) {
@@ -41,7 +52,7 @@ public class NpcController {
             m.addAttribute("username", user.getUsername());
             NpcForm npcForm = new NpcForm();
             String username = p.getName();
-            AppUser loggedInUser = appUserRepo.findByUsername(username);
+            AppUser loggedInUser = appUserRepository.findByUsername(username);
             if (loggedInUser != null) {
                m.addAttribute("username", username);
             }
@@ -52,6 +63,7 @@ public class NpcController {
             return "redirect:/login";
         }
     }
+
 
     @GetMapping("/create/{npcId}")
     public String getNpc(@PathVariable("npcId") Long npcId, Model m, Principal p, RedirectAttributes redir, HttpSession session) {
@@ -89,20 +101,26 @@ public class NpcController {
     }
 
     @PostMapping("/create")
-    public String createNpc(@ModelAttribute NpcForm npcForm, HttpSession session, RedirectAttributes redir, Principal p) {
+    public String createNpc(@ModelAttribute NpcForm npcForm, HttpSession session, RedirectAttributes redir, Principal p, Model m) {
         if (p != null) {
             Npc npc = npcFactory.createNpc(npcForm);
-            npc = openAiApiHandler.processNpc(npc);
-            npcRepository.save(npc);  // save the npc to the database
-            session.setAttribute("npcForm", npcForm);  // add npcForm to the session
+            Task task = taskService.createAndProcessTask(npc);
 
-            return "redirect:/create/" + npc.getId();  // redirect to the GET handler with the npc ID
+            // The npcForm is added, but only handled after the eventual redirect to /create/{npcId}
+            session.setAttribute("npcForm", npcForm);
+
+            // Add the taskId to the model so it can be passed to the loading page
+            m.addAttribute("taskId", task.getId());
+
+            // Return the loading page
+            return "loading";
         } else {
             redir.addFlashAttribute("errorMessage", "You must be logged in to create NPCs!");
 
             return "redirect:/login";
         }
     }
+
 
     @PostMapping("/saveToMyVillage")
     public String saveNpc(Long npcId, HttpSession session, RedirectAttributes redir, Model m, Principal p) {
@@ -126,6 +144,28 @@ public class NpcController {
 
             return "redirect:/login";
         }
+    }
+
+    @GetMapping("/checkStatus/{taskId}")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> checkStatus(@PathVariable Long taskId) {
+        Optional<Task> taskOptional = taskRepository.findById(taskId);
+        if (taskOptional.isPresent()) {
+            Task task = taskOptional.get();
+            Map<String, Object> data = new HashMap<>();
+            data.put("completed", task.isCompleted());
+            data.put("npcId", task.getNpc().getId());
+            data.put("error", task.getError());
+            return ResponseEntity.ok(data);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.singletonMap("error", "Task not found"));
+        }
+    }
+
+    @GetMapping("/errorPage")
+    public String errorPage(@RequestParam String errorMessage, Model model) {
+        model.addAttribute("errorMessage", errorMessage);
+        return "error";
     }
 
     @GetMapping("/myvillage")
