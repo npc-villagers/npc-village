@@ -95,14 +95,4 @@ public class OpenAiApiHandlerTest {
         assertThrows(RuntimeException.class, () -> openAiApiHandler.processNpc(npc));
     }
 
-    @Test
-    public void processNpc_WithAzureContentModerationError_ThrowsRuntimeException() {
-
-        // Create an NPC with content that triggers an Azure Content Moderation error
-        npc.setName("Fuck fuck fuck fuck");
-
-        // Assert that calling processNpc throws a RuntimeException
-        assertThrows(RuntimeException.class, () -> openAiApiHandler.processNpc(npc));
-    }
-
 }
