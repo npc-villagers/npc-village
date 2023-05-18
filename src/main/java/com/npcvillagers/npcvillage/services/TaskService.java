@@ -33,6 +33,38 @@ public class TaskService {
 
         return task;
     }
+
+    public NpcRepository getNpcRepository() {
+        return npcRepository;
+    }
+
+    public void setNpcRepository(NpcRepository npcRepository) {
+        this.npcRepository = npcRepository;
+    }
+
+    public OpenAiApiHandler getOpenAiApiHandler() {
+        return openAiApiHandler;
+    }
+
+    public void setOpenAiApiHandler(OpenAiApiHandler openAiApiHandler) {
+        this.openAiApiHandler = openAiApiHandler;
+    }
+
+    public TaskRepository getTaskRepository() {
+        return taskRepository;
+    }
+
+    public TaskProcessingService getTaskProcessingService() {
+        return taskProcessingService;
+    }
+
+    public void setTaskRepository(TaskRepository taskRepository) {
+        this.taskRepository = taskRepository;
+    }
+
+    public void setTaskProcessingService(TaskProcessingService taskProcessingService) {
+        this.taskProcessingService = taskProcessingService;
+    }
 }
 
 

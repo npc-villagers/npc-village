@@ -27,5 +27,21 @@ public class TaskProcessingService {
             taskRepository.save(task);  // update the task as completed or error
         }
     }
+
+    public OpenAiApiHandler getOpenAiApiHandler() {
+        return openAiApiHandler;
+    }
+
+    public void setOpenAiApiHandler(OpenAiApiHandler openAiApiHandler) {
+        this.openAiApiHandler = openAiApiHandler;
+    }
+
+    public TaskRepository getTaskRepository() {
+        return taskRepository;
+    }
+
+    public void setTaskRepository(TaskRepository taskRepository) {
+        this.taskRepository = taskRepository;
+    }
 }
 

@@ -294,4 +294,5 @@ public class NpcFactory {
             this.history = npc.getHistory();
         }
     }
+
 }
