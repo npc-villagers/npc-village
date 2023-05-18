@@ -28,6 +28,10 @@ public class OpenAiApiHandler {
     @Autowired
     NpcFactory npcFactory;
 
+    public OpenAiApiHandler(NpcFactory npcFactory) {
+        this.npcFactory = npcFactory;
+    }
+
     private static final String SEED_MESSAGE_SYSTEM = "You are a dungeon master's assistant for their creation of dungeons and dragons NPCs.";
     private static final String SEED_MESSAGE_USER_PATH = "src/main/resources/static/json/seedUserMessage.json";
     private static final String SEED_MESSAGE_USER = getSeedUserMessage();
@@ -228,5 +232,13 @@ public class OpenAiApiHandler {
         }
 
         return null;
+    }
+
+    public NpcFactory getNpcFactory() {
+        return npcFactory;
+    }
+
+    public void setNpcFactory(NpcFactory npcFactory) {
+        this.npcFactory = npcFactory;
     }
 }
