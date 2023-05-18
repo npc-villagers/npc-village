@@ -23,30 +23,48 @@ public class NpcFactory {
         if (npc.getCreationMethod() == CreationMethod.MANUAL) {
             if (form.getName().isEmpty() || "Any".equals(form.getName())) {
                 npc.setName("Placeholder");
+            } else {
+                npc.setName(form.getName());
             }
             if (form.getVoice().isEmpty() || "Any".equals(form.getVoice())) {
                 npc.setVoice("Placeholder");
+            } else {
+                npc.setVoice(form.getVoice());
             }
             if (form.getAppearance().isEmpty() || "Any".equals(form.getAppearance())) {
                 npc.setAppearance("Placeholder");
+            } else {
+                npc.setAppearance(form.getAppearance());
             }
             if (form.getPersonality().isEmpty() || "Any".equals(form.getPersonality())) {
                 npc.setPersonality("Placeholder");
+            } else {
+                npc.setPersonality(form.getPersonality());
             }
             if (form.getMotivation().isEmpty() || "Any".equals(form.getMotivation())) {
                 npc.setMotivation("Placeholder");
+            } else {
+                npc.setMotivation(form.getMotivation());
             }
             if (form.getIdeal().isEmpty() || "Any".equals(form.getIdeal())) {
                 npc.setIdeal("Placeholder");
+            } else {
+                npc.setIdeal(form.getIdeal());
             }
             if (form.getBond().isEmpty() || "Any".equals(form.getBond())) {
                 npc.setBond("Placeholder");
+            } else {
+                npc.setBond(form.getBond());
             }
             if (form.getFlaw().isEmpty() || "Any".equals(form.getFlaw())) {
                 npc.setFlaw("Placeholder");
+            } else {
+                npc.setFlaw(form.getFlaw());
             }
             if (form.getHistory().isEmpty() || "Any".equals(form.getHistory())) {
                 npc.setHistory("Placeholder");
+            } else {
+                npc.setHistory(form.getHistory());
             }
 
             // The customOccupation and customAge categories might be empty or "Any" as well, but we handle those later to set the derived occupation and age values. So in this location we will update the form's values if they are empty
