@@ -3,12 +3,17 @@ package com.npcvillagers.npcvillage.controllers;
 import com.npcvillagers.npcvillage.models.AppUser;
 import com.npcvillagers.npcvillage.models.Npc;
 import com.npcvillagers.npcvillage.models.NpcForm;
+import com.npcvillagers.npcvillage.models.Task;
+import com.npcvillagers.npcvillage.models.enums.CreationMethod;
 import com.npcvillagers.npcvillage.repos.AppUserRepository;
 import com.npcvillagers.npcvillage.repos.NpcRepository;
+import com.npcvillagers.npcvillage.repos.TaskRepository;
 import com.npcvillagers.npcvillage.services.NpcFactory;
-import com.npcvillagers.npcvillage.services.OpenAiApiHandler;
+import com.npcvillagers.npcvillage.services.TaskService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -16,8 +21,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
 import java.security.Principal;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Controller
 public class NpcController {
@@ -32,7 +36,10 @@ public class NpcController {
     NpcFactory npcFactory;
 
     @Autowired
-    OpenAiApiHandler openAiApiHandler;
+    TaskService taskService;
+
+    @Autowired
+    TaskRepository taskRepository;
 
     @GetMapping("/create")
     public String getCreateDefault(Model m, Principal p, RedirectAttributes redir) {
@@ -53,16 +60,16 @@ public class NpcController {
         }
     }
 
+
     @GetMapping("/create/{npcId}")
     public String getNpc(@PathVariable("npcId") Long npcId, Model m, Principal p, RedirectAttributes redir, HttpSession session) {
         if (p != null) {
             AppUser appUser = appUserRepository.findByUsername(p.getName());
             m.addAttribute("username", appUser.getUsername());
 
-            Optional<Npc> createdNpc = npcRepository.findById(npcId);
-            if (createdNpc.isPresent()) {
-                Npc npc = createdNpc.get();
+            Npc npc = npcRepository.findById(npcId).orElse(null);
 
+            if (npc != null) {
                 // Check if the NPC is already saved in the village
                 boolean isSaved = appUser.getNpcs().contains(npc);
                 m.addAttribute("isSaved", isSaved);
@@ -89,18 +96,54 @@ public class NpcController {
     }
 
     @PostMapping("/create")
-    public String createNpc(@ModelAttribute NpcForm npcForm, HttpSession session, RedirectAttributes redir, Principal p) {
+    public String createNpc(@ModelAttribute NpcForm npcForm,
+                            HttpSession session,
+                            RedirectAttributes redir,
+                            Principal p,
+                            Model m) {
         if (p != null) {
             Npc npc = npcFactory.createNpc(npcForm);
-            npc = openAiApiHandler.processNpc(npc);
-            npcRepository.save(npc);  // save the npc to the database
-            session.setAttribute("npcForm", npcForm);  // add npcForm to the session
+            // The npcForm is added, but only handled after the eventual redirect to /create/{npcId}
+            session.setAttribute("npcForm", npcForm);
 
-            return "redirect:/create/" + npc.getId();  // redirect to the GET handler with the npc ID
+            if (npc.getCreationMethod() == CreationMethod.MANUAL) {
+                npcRepository.save(npc);  // save the npc to the database
+
+                return "redirect:/create/" + npc.getId();  // redirect to the GET handler with the npc ID
+            } else if (npc.getCreationMethod() == CreationMethod.AI_ASSISTANT) {
+
+                Task task = taskService.createAndProcessTask(npc);
+
+                // Add the taskId to the model so it can be passed to the loading page
+                m.addAttribute("taskId", task.getId());
+
+                // Return the loading page
+                return "loading";
+            } else {
+                redir.addFlashAttribute("errorMessage", "Unknown creation method");
+
+                return "redirect:/error";
+            }
         } else {
             redir.addFlashAttribute("errorMessage", "You must be logged in to create NPCs!");
 
             return "redirect:/login";
+        }
+
+    }
+
+    @GetMapping("/checkStatus/{taskId}")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> checkStatus(@PathVariable Long taskId) {
+        Task task = taskRepository.findById(taskId).orElse(null);
+        if (task != null) {
+            Map<String, Object> data = new HashMap<>();
+            data.put("completed", task.isCompleted());
+            data.put("npcId", task.getNpc().getId());
+            data.put("error", task.getError());
+            return ResponseEntity.ok(data);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.singletonMap("error", "Task not found"));
         }
     }
 
@@ -108,9 +151,8 @@ public class NpcController {
     public String saveNpc(Long npcId, HttpSession session, RedirectAttributes redir, Model m, Principal p) {
         if (p != null) {
             AppUser appUser = appUserRepository.findByUsername(p.getName());
-            Optional<Npc> createdNpc = npcRepository.findById(npcId);
-            if (createdNpc.isPresent()) {
-                Npc npc = createdNpc.get();
+            Npc npc = npcRepository.findById(npcId).orElse(null);
+            if (npc != null) {
                 appUser.addNpc(npc);
                 npcRepository.save(npc);  // save the npc to the database
                 appUserRepository.save(appUser); // save the user to the database
@@ -126,6 +168,12 @@ public class NpcController {
 
             return "redirect:/login";
         }
+    }
+
+    @GetMapping("/errorPage")
+    public String errorPage(@RequestParam String errorMessage, Model model) {
+        model.addAttribute("errorMessage", errorMessage);
+        return "error";
     }
 
     @GetMapping("/myvillage")
@@ -193,10 +241,17 @@ public class NpcController {
         Npc npcToBeDeleted = npcRepository.findById(npcId).orElse(null);
 
         if (npcToBeDeleted != null) {
+            // fetch and delete the associated Task if it exists
+            Task task = taskRepository.findByNpcId(npcId);
+            if (task != null) {
+                taskRepository.delete(task);
+            }
+
             npcRepository.delete(npcToBeDeleted);
         } else {
             redir.addFlashAttribute("errorMessage", "NPC not found!");
         }
+
         return new RedirectView("/myvillage");
     }
 }

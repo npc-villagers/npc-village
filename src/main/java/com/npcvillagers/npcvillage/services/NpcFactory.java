@@ -17,7 +17,59 @@ public class NpcFactory {
         // Convert the NpcForm to an Npc and return it.
         Npc npc = new Npc();
 
-        npc.setName(form.getName().isEmpty() ? "Any" : form.getName());
+        npc.setCreationMethod(form.getCreationMethod());
+        // All the text entry fields are set depending on whether the user chooses Manual or AI Assistant methods. For the manual method, if the field is empty or is "Any", we set each to "Placeholder", otherwise we set to "Any" if it is empty for the AI Assistant to handle.
+
+        if (npc.getCreationMethod() == CreationMethod.MANUAL) {
+            if (form.getName().isEmpty() || "Any".equals(form.getName())) {
+                npc.setName("Placeholder");
+            }
+            if (form.getVoice().isEmpty() || "Any".equals(form.getVoice())) {
+                npc.setVoice("Placeholder");
+            }
+            if (form.getAppearance().isEmpty() || "Any".equals(form.getAppearance())) {
+                npc.setAppearance("Placeholder");
+            }
+            if (form.getPersonality().isEmpty() || "Any".equals(form.getPersonality())) {
+                npc.setPersonality("Placeholder");
+            }
+            if (form.getMotivation().isEmpty() || "Any".equals(form.getMotivation())) {
+                npc.setMotivation("Placeholder");
+            }
+            if (form.getIdeal().isEmpty() || "Any".equals(form.getIdeal())) {
+                npc.setIdeal("Placeholder");
+            }
+            if (form.getBond().isEmpty() || "Any".equals(form.getBond())) {
+                npc.setBond("Placeholder");
+            }
+            if (form.getFlaw().isEmpty() || "Any".equals(form.getFlaw())) {
+                npc.setFlaw("Placeholder");
+            }
+            if (form.getHistory().isEmpty() || "Any".equals(form.getHistory())) {
+                npc.setHistory("Placeholder");
+            }
+
+            // The customOccupation and customAge categories might be empty or "Any" as well, but we handle those later to set the derived occupation and age values. So in this location we will update the form's values if they are empty
+            form.setCustomAge(form.getCustomAge().isEmpty() ? "Placeholder" : form.getCustomAge());
+
+            form.setCustomOccupation(form.getCustomOccupation().isEmpty() ? "Placeholder" : form.getCustomOccupation());
+
+        } else {
+            npc.setName(form.getName().isEmpty() ? "Any" : form.getName());
+            npc.setVoice(form.getVoice().isEmpty() ? "Any" : form.getVoice());
+            npc.setAppearance(form.getAppearance().isEmpty() ? "Any" : form.getAppearance());
+            npc.setPersonality(form.getPersonality().isEmpty() ? "Any" : form.getPersonality());
+            npc.setMotivation(form.getMotivation().isEmpty() ? "Any" : form.getMotivation());
+            npc.setIdeal(form.getIdeal().isEmpty() ? "Any" : form.getIdeal());
+            npc.setBond(form.getBond().isEmpty() ? "Any" : form.getBond());
+            npc.setFlaw(form.getFlaw().isEmpty() ? "Any" : form.getFlaw());
+            npc.setHistory(form.getHistory().isEmpty() ? "Any" : form.getHistory());
+
+            // The customOccupation and customAge categories might be empty as well, but we handle those later to set the derived occupation and age values. So in this location we will update the form's values if they are empty
+            form.setCustomAge(form.getCustomAge().isEmpty() ? "Any" : form.getCustomAge());
+
+            form.setCustomOccupation(form.getCustomOccupation().isEmpty() ? "Any" : form.getCustomOccupation());
+        }
 
         // If the form species starts with ANY, then get a random species, otherwise set the species to the form value
         Species formSpecies = form.getSpecies();
@@ -37,11 +89,9 @@ public class NpcFactory {
         npc.setAgeCategory(formAgeCategory.isAnyType() ? formAgeCategory.getRandomAgeCategory() : formAgeCategory);
         String formCustomAge = form.getCustomAge();
         npc.setCustomAge(formCustomAge);
-        
-        // The actual age field is dependent on whether the user has entered a custom age
-        npc.setAge(formAgeCategory == AgeCategory.CUSTOM ? formCustomAge : npc.getAgeCategory().getDisplayName());
 
-        npc.setVoice(form.getVoice().isEmpty() ? "Any" : form.getVoice());
+        // The actual age field is dependent on whether the user has chosen the custom category and entered a custom age
+        npc.setAge(formAgeCategory == AgeCategory.CUSTOM ? formCustomAge : npc.getAgeCategory().getDisplayName());
 
         OccupationCategory formOccupationCategory = form.getOccupationCategory();
         npc.setOccupationCategory(formOccupationCategory == OccupationCategory.ANY ? formOccupationCategory.getRandomOccupation() : formOccupationCategory);
@@ -49,7 +99,7 @@ public class NpcFactory {
         String formCustomOccupation = form.getCustomOccupation();
         npc.setCustomOccupation(formCustomOccupation);
 
-        // The actual occupation field is dependent on whether the user has entered a custom occupation
+        // The actual occupation field is dependent on whether the user has entered chosen the custom category and entered a custom occupation
         npc.setOccupation(formOccupationCategory == OccupationCategory.CUSTOM ? formCustomOccupation : npc.getOccupationCategory().getDisplayName());
 
         CharacterClass formCharacterClass = form.getCharacterClass();
@@ -61,14 +111,6 @@ public class NpcFactory {
 
         PlayerRelationship formPlayerRelationship = form.getPlayerRelationship();
         npc.setPlayerRelationship(formPlayerRelationship == PlayerRelationship.ANY ? formPlayerRelationship.getRandomPlayerRelationship() : formPlayerRelationship);
-
-        npc.setAppearance(form.getAppearance().isEmpty() ? "Any" : form.getAppearance());
-        npc.setPersonality(form.getPersonality().isEmpty() ? "Any" : form.getPersonality());
-        npc.setMotivation(form.getMotivation().isEmpty() ? "Any" : form.getMotivation());
-        npc.setIdeal(form.getIdeal().isEmpty() ? "Any" : form.getIdeal());
-        npc.setBond(form.getBond().isEmpty() ? "Any" : form.getBond());
-        npc.setFlaw(form.getFlaw().isEmpty() ? "Any" : form.getFlaw());
-        npc.setHistory(form.getHistory().isEmpty() ? "Any" : form.getHistory());
 
         return npc;
     }
@@ -97,6 +139,7 @@ public class NpcFactory {
         form.setBond(npc.getBond());
         form.setFlaw(npc.getFlaw());
         form.setHistory(npc.getHistory());
+        form.setCreationMethod(npc.getCreationMethod());
 
         return form;
     }
@@ -123,6 +166,7 @@ public class NpcFactory {
         npc.setBond(form.getBond());
         npc.setFlaw(form.getFlaw());
         npc.setHistory(form.getHistory());
+        npc.setCreationMethod(form.getCreationMethod());
 
         return npc;
     }

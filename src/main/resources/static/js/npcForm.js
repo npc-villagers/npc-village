@@ -1,5 +1,8 @@
 'use strict';
 
+// This script is associated with the forms to dynamically populate dropdowns and show fields that are dependent on other fields, which can't be done without a full page reload in Thymeleaf. The functionality to remove the "ANY" option is added as well, because the form has a slightly different layout for our editNpcForm.html fragment.
+
+
 // This function updates the subspecies dropdown when a species is selected, and loads the saved subspecies if it's set
 function loadSubspecies(speciesName) {
     axios.get('/species/' + speciesName)
@@ -34,7 +37,7 @@ function loadSubspecies(speciesName) {
 
 // This function shows or hides the customAge field based on the selected age
 function toggleCustomAge() {
-    let ageSelect = document.getElementById('age');
+    let ageSelect = document.getElementById('ageCategory');
     let customAge = document.getElementById('customAgeDiv');
     if (ageSelect.value === 'CUSTOM') {
         customAge.style.display = 'block';
@@ -45,7 +48,7 @@ function toggleCustomAge() {
 
 // This function shows or hides the customOccupation field based on the selected occupation
 function toggleCustomOccupation() {
-    let occupationSelect = document.getElementById('occupation');
+    let occupationSelect = document.getElementById('occupationCategory');
     let customOccupation = document.getElementById('customOccupationDiv');
     if (occupationSelect.value === 'CUSTOM') {
         customOccupation.style.display = 'block';
@@ -68,7 +71,7 @@ window.addEventListener('load', function() {
 
     inputs.forEach((input) => {
         let handler = (event) => {
-            if (event.target.value === 'Any') {
+            if (event.target.value === 'Any' || event.target.value === 'Placeholder') {
                 setTimeout(() => event.target.select(), 0);
             }
         };
