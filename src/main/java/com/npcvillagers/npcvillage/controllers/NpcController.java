@@ -132,6 +132,20 @@ public class NpcController {
 
     }
 
+    @GetMapping("/checkStatus/{taskId}")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> checkStatus(@PathVariable Long taskId) {
+        Task task = taskRepository.findById(taskId).orElse(null);
+        if (task != null) {
+            Map<String, Object> data = new HashMap<>();
+            data.put("completed", task.isCompleted());
+            data.put("npcId", task.getNpc().getId());
+            data.put("error", task.getError());
+            return ResponseEntity.ok(data);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.singletonMap("error", "Task not found"));
+        }
+    }
 
     @PostMapping("/saveToMyVillage")
     public String saveNpc(Long npcId, HttpSession session, RedirectAttributes redir, Model m, Principal p) {
@@ -153,21 +167,6 @@ public class NpcController {
             redir.addFlashAttribute("errorMessage", "You must be logged in to create NPCs!");
 
             return "redirect:/login";
-        }
-    }
-
-    @GetMapping("/checkStatus/{taskId}")
-    @ResponseBody
-    public ResponseEntity<Map<String, Object>> checkStatus(@PathVariable Long taskId) {
-        Task task = taskRepository.findById(taskId).orElse(null);
-        if (task != null) {
-            Map<String, Object> data = new HashMap<>();
-            data.put("completed", task.isCompleted());
-            data.put("npcId", task.getNpc().getId());
-            data.put("error", task.getError());
-            return ResponseEntity.ok(data);
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.singletonMap("error", "Task not found"));
         }
     }
 
