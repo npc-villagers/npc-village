@@ -89,6 +89,8 @@ public class AppUserController {
             m.addAttribute("id", user.getId());
             m.addAttribute("user", user);
             m.addAttribute("username", user.getUsername());
+            m.addAttribute("firstName", user.getFirstName());
+            m.addAttribute("lastName", user.getLastName());
             return "profile";
         }
         return "login";
