@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Login</title>
+  <title>My Village</title>
   <!--  <link rel="stylesheet" href="/css/styles.css">-->
   <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.1.0/css/bootstrap.min.css}" />
 
@@ -20,21 +20,31 @@
   <p>Your village is empty! Explore <a href="/create">Create</a> to create some NPCs.</p>
 </div>
 
+<!--<div th:if="${npcForm != null}">-->
+<!--  <div th:replace="~{fragments/editNpcForm :: npcForm(formAction=@{/updateNpc/{npcId}(npcId=${npcId})}, formMethod='PUT', npcForm=${npcForm}, submitButtonText='Update NPC')}"></div>-->
+<!--</div>-->
+
+
 <div th:if="${npcForm != null}">
-  <div th:replace="~{fragments/editNpcForm :: npcForm(formAction=@{/updateNpc/{npcId}(npcId=${npcId})}, formMethod='PUT', npcForm=${npcForm}, submitButtonText='Update NPC')}"></div>
+  <div th:replace="~{fragments/editNpcForm :: npcForm(formAction=@{/updateNpc/{npcId}(npcId=${npcId})}, formMethod='PUT', npcForm=${npcForm}, submitButtonText='Update NPC', cancelButtonAction=@{/myvillage}, cancelButtonMethod='GET', cancelButtonText='Cancel')}"></div>
 </div>
+
+
 
 <div th:if="${!npcs.isEmpty()}" class="npcs-container">
   <div th:each="npc : ${npcs}">
     <div th:if="${npc != null}" th:replace="~{fragments/npcStatBlock :: npcStatBlock(${npc})}"></div>
+
     <form th:action="@{/myvillage/{npcId}(npcId=${npc.id})}" th:method="GET">
       <input type="hidden" name="npcId" th:value="${npc.id}">
-      <input type="submit" value="Edit">
+<!--      <input type="submit" value="Edit">-->
+      <button class="btn btn-primary" type="submit">Edit</button>
     </form>
 
     <form th:action="@{/myvillage/{npcId}(npcId=${npc.id})}" method="POST">
       <input type="hidden" name="_method" value="delete" />
-      <input type="submit" value="Delete">
+<!--      <input type="submit" value="Delete">-->
+      <button class="btn btn-danger" type="submit">Delete</button>
     </form>
   </div>
 </div>
