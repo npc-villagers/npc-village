@@ -74,8 +74,8 @@
                 <input type="text" id="voice" name="voice" class="form-control" th:value="${npcForm.voice}" required>
             </div>
             <div class="mb-3">
-                <label for="age" class="form-label">Age</label>
-                <select id="age" name="age" class="form-select" required>
+                <label for="ageCategory" class="form-label">Age</label>
+                <select id="ageCategory" name="ageCategory" class="form-select" required>
                     <option th:each="ageCategory : ${T(com.npcvillagers.npcvillage.models.enums.AgeCategory).values()}"
                             th:if="${!ageCategory.name().startsWith('ANY')}"
                             th:value="${ageCategory.name()}"
@@ -88,8 +88,8 @@
                 <input type="text" id="customAge" name="customAge" class="form-control" th:value="${npcForm.customAge}">
             </div>
             <div class="mb-3">
-                <label for="occupation" class="form-label">Occupation</label>
-                <select id="occupation" name="occupation" class="form-select" required>
+                <label for="occupationCategory" class="form-label">Occupation</label>
+                <select id="occupationCategory" name="occupationCategory" class="form-select" required>
                     <option th:each="occupationCategory : ${T(com.npcvillagers.npcvillage.models.enums.OccupationCategory).values()}"
                             th:if="${!occupationCategory.name().startsWith('ANY')}"
                             th:value="${occupationCategory.name()}"
@@ -148,6 +148,8 @@
 
         </form>
     </div>
+  
+    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script th:src="@{/js/npcForm.js}"></script>
 </div>

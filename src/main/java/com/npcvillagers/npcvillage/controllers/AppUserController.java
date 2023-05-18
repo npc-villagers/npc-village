@@ -40,7 +40,7 @@ public class AppUserController {
 
             m.addAttribute("username", username);
         } else
-        throw new RuntimeException("It's a 404!");
+            throw new RuntimeException("It's a 404!");
         return "index.html";
     }
 
@@ -84,7 +84,7 @@ public class AppUserController {
 
     @GetMapping("/profile")
     public String getMyProfile(Model m, Principal p) {
-        if(p != null) { //not strictly needed if WebSecurityConfig is set up properly
+        if (p != null) { //not strictly needed if WebSecurityConfig is set up properly
             AppUser user = appUserRepo.findByUsername(p.getName());
             m.addAttribute("id", user.getId());
             m.addAttribute("user", user);
@@ -99,7 +99,7 @@ public class AppUserController {
     @PutMapping("/profile")
     public RedirectView editProfile(Principal p, String username, String firstName, String lastName, Long id, RedirectAttributes redir) {
         AppUser user = appUserRepo.findById(id).orElseThrow();
-        if(p != null) { //not strictly needed if WebSecurityConfig is set up properly
+        if (p != null) { //not strictly needed if WebSecurityConfig is set up properly
             user.setUsername(username);
             user.setFirstName(firstName);
             user.setLastName(lastName);
@@ -121,7 +121,7 @@ public class AppUserController {
     public RedirectView deleteUser(@PathVariable Long id, Principal p, RedirectAttributes redir) {
         //delete
         AppUser userToDelete = appUserRepo.findById(id).orElseThrow();
-        if(p != null && p.getName().equals(userToDelete.getUsername())) {
+        if (p != null && p.getName().equals(userToDelete.getUsername())) {
             appUserRepo.deleteById(id);
             //make sure the p is null after delete
             //otherwise you may have some incorrect values still stored in your session
@@ -130,11 +130,27 @@ public class AppUserController {
             //if a user isn't authorized to delete and they press the button
             //flash an error and keep them on the same page
             redir.addFlashAttribute("errorMessage", "Cannot delete another user's account!");
-            return new RedirectView("/profile/"+id);
+            return new RedirectView("/profile/" + id);
         }
 
         //with a void return type we would just return an error page after delete is completed
         //let's bring users back to the homepage instead
         return new RedirectView("/logout");
     }
+
+
+
+    @GetMapping("/ourteam")
+    public String showOurTeam(Model m, Principal p, RedirectAttributes redir) {
+        if (p != null) {
+            AppUser user = appUserRepo.findByUsername(p.getName());
+            m.addAttribute("user", user);
+            m.addAttribute("username", user.getUsername());
+            return "ourteam";  // Return the view name
+
+        }
+        return "redirect:/ourteam";
+    }
+
+
 }

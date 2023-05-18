@@ -56,6 +56,8 @@ public class Npc {
     private String flaw;
     @Column(columnDefinition = "text")
     private String history;
+    @Enumerated(EnumType.STRING)
+    private CreationMethod creationMethod;
     @ManyToOne
     @JoinColumn(name = "appUser_id")
     private AppUser appUser;
@@ -257,6 +259,14 @@ public class Npc {
         this.history = history;
     }
 
+    public CreationMethod getCreationMethod() {
+        return creationMethod;
+    }
+
+    public void setCreationMethod(CreationMethod creationMethod) {
+        this.creationMethod = creationMethod;
+    }
+
     public AppUser getAppUser() {
         return appUser;
     }
@@ -292,6 +302,7 @@ public class Npc {
                 ", bond='" + bond + '\'' +
                 ", flaw='" + flaw + '\'' +
                 ", history='" + history + '\'' +
+                ", creationMethod=" + creationMethod +
                 ", appUser=" + appUser +
                 '}';
     }

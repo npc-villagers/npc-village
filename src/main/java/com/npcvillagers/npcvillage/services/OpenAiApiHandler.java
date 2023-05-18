@@ -71,7 +71,8 @@ public class OpenAiApiHandler {
         OpenAiService service = null;
 
         try {
-            service = new OpenAiService(token);
+            // Set duration to 60 seconds to avoid a socket exception for long response times
+            service = new OpenAiService(token, Duration.ofSeconds(60));
 
             ModerationRequest moderationRequest = ModerationRequest.builder()
                     .input(userNpcJsonString)

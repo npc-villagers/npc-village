@@ -195,8 +195,8 @@
                 <input type="text" id="voice" name="voice" class="form-control" th:value="${npcForm.voice}" required>
             </div>
             <div class="col-md-6">
-                <label for="age" class="form-label">Age</label>
-                <select id="age" name="age" class="form-select" required>
+                <label for="ageCategory" class="form-label">Age</label>
+                <select id="ageCategory" name="ageCategory" class="form-select" required>
                     <option th:each="ageCategory : ${T(com.npcvillagers.npcvillage.models.enums.AgeCategory).values()}"
                             th:value="${ageCategory.name()}"
                             th:text="${ageCategory.getDisplayName()}"
@@ -210,8 +210,8 @@
                 </div>
             </div>
             <div class="col-md-6">
-                <label for="occupation" class="form-label">Occupation</label>
-                <select id="occupation" name="occupation" class="form-select" required>
+                <label for="occupationCategory" class="form-label">Occupation</label>
+                <select id="occupationCategory" name="occupationCategory" class="form-select" required>
                     <option th:each="occupationCategory : ${T(com.npcvillagers.npcvillage.models.enums.OccupationCategory).values()}"
                             th:value="${occupationCategory.name()}"
                             th:text="${occupationCategory.getDisplayName()}"
@@ -263,7 +263,16 @@
             </div>
         </div>
         <div class="mt-3">
-            <input type="submit" class="btn btn-primary" th:value="${submitButtonText}" />
+          <div id="create-submit-div">
+              <label for="creationMethod">Creation Method</label>
+              <select id="creationMethod" name="creationMethod" required>
+                  <option th:each="creationMethod : ${T(com.npcvillagers.npcvillage.models.enums.CreationMethod).values()}"
+                          th:value="${creationMethod.name()}"
+                          th:text="${creationMethod.getDisplayName()}"
+                          th:selected="${creationMethod.name() == npcForm.creationMethod.name()}">Creation Method</option>
+              </select>
+              <input type="submit" th:value="${submitButtonText}" />
+          </div>
         </div>
     </form>
 
