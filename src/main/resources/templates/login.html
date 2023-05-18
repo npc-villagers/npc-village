@@ -43,9 +43,7 @@
     <link rel="stylesheet" href="@{/css/styles.css}">
 </head>
 <body>
-<header>
-    <nav th:replace="fragments/nav-header :: navbar"></nav>
-</header>
+<header th:replace="~{fragments/nav-header :: navbar}"></header>
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-lg-6">
