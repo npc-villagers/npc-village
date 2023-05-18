@@ -113,7 +113,15 @@
         <label for="history">History</label>
         <input type="text" id="history" name="history" th:value="${npcForm.history}" required>
 
-        <input type="submit" th:value="${submitButtonText}" />
+        <div id="create-submit-div">
+            <label for="creationMethod">Creation Method</label>
+            <select id="creationMethod" name="creationMethod" required>
+                <option value="Manual">Manual</option>
+                <option value="AI Assistant">AI Assistant</option>
+            </select>
+
+            <input type="submit" th:value="${submitButtonText}" />
+        </div>
     </form>
 
     <!-- Scripts -->

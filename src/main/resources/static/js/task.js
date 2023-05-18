@@ -1,5 +1,7 @@
 'use strict';
 
+// The purpose of this script is to poll the task that is associated with the OpenAI request. It is attached to the loading template, and every few seconds, a random loading phrase is provided to the user for user experience.
+
 const loadingPhrases = [
   "Scrying through the planes of existence...",
   "Invoking the power of the Archmage...",

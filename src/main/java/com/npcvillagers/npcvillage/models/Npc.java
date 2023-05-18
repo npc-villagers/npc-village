@@ -60,6 +60,8 @@ public class Npc {
     @JoinColumn(name = "appUser_id")
     private AppUser appUser;
 
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "npc", orphanRemoval = true)
+    private Task task;
     // Constructors
     public Npc() {
         // empty
@@ -265,6 +267,14 @@ public class Npc {
         this.appUser = appUser;
     }
 
+    public Task getTask() {
+        return task;
+    }
+
+    public void setTask(Task task) {
+        this.task = task;
+    }
+
     @Override
     public String toString() {
         return "Npc{" +
@@ -293,6 +303,7 @@ public class Npc {
                 ", flaw='" + flaw + '\'' +
                 ", history='" + history + '\'' +
                 ", appUser=" + appUser +
+                ", task=" + task +
                 '}';
     }
 

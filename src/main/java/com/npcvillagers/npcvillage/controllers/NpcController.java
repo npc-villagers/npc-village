@@ -101,24 +101,41 @@ public class NpcController {
     }
 
     @PostMapping("/create")
-    public String createNpc(@ModelAttribute NpcForm npcForm, HttpSession session, RedirectAttributes redir, Principal p, Model m) {
+    public String createNpc(@ModelAttribute NpcForm npcForm,
+                            @RequestParam("creationMethod") String creationMethod,
+                            HttpSession session,
+                            RedirectAttributes redir,
+                            Principal p,
+                            Model m) {
         if (p != null) {
             Npc npc = npcFactory.createNpc(npcForm);
-            Task task = taskService.createAndProcessTask(npc);
-
             // The npcForm is added, but only handled after the eventual redirect to /create/{npcId}
             session.setAttribute("npcForm", npcForm);
 
-            // Add the taskId to the model so it can be passed to the loading page
-            m.addAttribute("taskId", task.getId());
+            if ("Manual".equals(creationMethod)) {
+                npcRepository.save(npc);  // save the npc to the database
 
-            // Return the loading page
-            return "loading";
+                return "redirect:/create/" + npc.getId();  // redirect to the GET handler with the npc ID
+            } else if ("AI Assistant".equals(creationMethod)) {
+
+                Task task = taskService.createAndProcessTask(npc);
+
+                // Add the taskId to the model so it can be passed to the loading page
+                m.addAttribute("taskId", task.getId());
+
+                // Return the loading page
+                return "loading";
+            } else {
+                redir.addFlashAttribute("errorMessage", "Unknown creation method");
+
+                return "redirect:/error";
+            }
         } else {
             redir.addFlashAttribute("errorMessage", "You must be logged in to create NPCs!");
 
             return "redirect:/login";
         }
+
     }
 
 
@@ -233,10 +250,17 @@ public class NpcController {
         Npc npcToBeDeleted = npcRepository.findById(npcId).orElse(null);
 
         if (npcToBeDeleted != null) {
+            // fetch and delete the associated Task if it exists
+            Task task = npcToBeDeleted.getTask();
+            if (task != null) {
+                taskRepository.delete(task);
+            }
+
             npcRepository.delete(npcToBeDeleted);
         } else {
             redir.addFlashAttribute("errorMessage", "NPC not found!");
         }
+
         return new RedirectView("/myvillage");
     }
 }
