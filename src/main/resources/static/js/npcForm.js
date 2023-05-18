@@ -71,7 +71,7 @@ window.addEventListener('load', function() {
 
     inputs.forEach((input) => {
         let handler = (event) => {
-            if (event.target.value === 'Any') {
+            if (event.target.value === 'Any' || event.target.value === 'Placeholder') {
                 setTimeout(() => event.target.select(), 0);
             }
         };
