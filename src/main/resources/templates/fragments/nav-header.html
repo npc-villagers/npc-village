@@ -13,33 +13,33 @@
 <!--            <span class="navbar-toggler-icon"></span>-->
 <!--        </button>-->
         <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav" >
-                <li class="nav-item">
+            <ul class="navbar-nav">
+                <li class="nav-item" th:classappend="${#strings.isEmpty(username)} ? 'd-none' : ''">
                     <a class="nav-link" href="/">Home</a>
                 </li>
-                <li class="nav-item" th:if="${username}">
+                <li class="nav-item" th:classappend="${#strings.isEmpty(username)} ? 'd-none' : ''">
                     <a class="nav-link" href="/create">Create NPC</a>
                 </li>
-                <li class="nav-item" th:if="${username}">
+                <li class="nav-item" th:classappend="${#strings.isEmpty(username)} ? 'd-none' : ''">
                     <a class="nav-link" href="/myvillage">My Village</a>
                 </li>
-                <li class="nav-item" th:if="${username}">
+                <li class="nav-item" th:classappend="${#strings.isEmpty(username)} ? 'd-none' : ''">
                     <a class="nav-link" href="/profile">My Profile</a>
                 </li>
-                <li class="nav-item" th:if="${username}">
+                <li class="nav-item" th:classappend="${#strings.isEmpty(username)} ? 'd-none' : ''">
                     <a class="nav-link" href="/logout">Logout</a>
                 </li>
-                <li class="nav-item" th:if="${username}">
+                <li class="nav-item" th:classappend="${#strings.isEmpty(username)} ? 'd-none' : ''">
                     <a class="nav-link" href="/ourteam">Our Team</a>
                 </li>
 
-                <li class="nav-item" th:unless="${username}">
+                <li class="nav-item" th:classappend="${#strings.isEmpty(username)} ? '' : 'd-none'">
                     <a class="nav-link" href="/login">Login</a>
                 </li>
-                <li class="nav-item" th:unless="${username}">
+                <li class="nav-item" th:classappend="${#strings.isEmpty(username)} ? '' : 'd-none'">
                     <a class="nav-link" href="/signup">Sign up</a>
                 </li>
-                <li class="nav-item" th:unless="${username}">
+                <li class="nav-item" th:classappend="${#strings.isEmpty(username)} ? '' : 'd-none'">
                     <a class="nav-link" href="/ourTeam">Our Team</a>
                 </li>
             </ul>

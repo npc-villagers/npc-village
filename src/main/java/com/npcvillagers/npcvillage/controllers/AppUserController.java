@@ -40,7 +40,7 @@ public class AppUserController {
 
             m.addAttribute("username", username);
         }
-        return "index.html";
+        return "index";
     }
 
 
