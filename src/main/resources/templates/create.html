@@ -15,6 +15,8 @@
 <div th:replace="/fragments/error-fragment :: applicationUser-error"></div>
 <h1>Create NPC</h1>
 <div th:replace="~{fragments/createNpcForm :: npcForm(formAction='/create', formMethod='post', npcForm=${npcForm}, submitButtonText='Create')}"></div>
+<footer th:replace="~{fragments/footer-fragment :: footer}">
+</footer>
 <script th:src="@{/webjars/bootstrap/5.1.0/js/bootstrap.min.js}"></script>
 <script th:src="@{/webjars/jquery/3.6.0/jquery.min.js}"></script>
 </body>
