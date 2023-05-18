@@ -77,7 +77,7 @@
             <input type="text" id="customAge" name="customAge" th:value="${npcForm.customAge}">
         </div>
 
-        <label for="occupationCategory">Occupation</label>
+        <label for="occupationCategory">Occupation / Background</label>
         <select id="occupationCategory"  name="occupationCategory" required>
             <option th:each="occupationCategory : ${T(com.npcvillagers.npcvillage.models.enums.OccupationCategory).values()}"
                     th:if="${!occupationCategory.name().startsWith('ANY')}"

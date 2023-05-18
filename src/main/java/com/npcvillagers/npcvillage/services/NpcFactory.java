@@ -70,6 +70,8 @@ public class NpcFactory {
         npc.setFlaw(form.getFlaw().isEmpty() ? "Any" : form.getFlaw());
         npc.setHistory(form.getHistory().isEmpty() ? "Any" : form.getHistory());
 
+        npc.setCreationMethod(form.getCreationMethod());
+
         return npc;
     }
 
@@ -97,6 +99,7 @@ public class NpcFactory {
         form.setBond(npc.getBond());
         form.setFlaw(npc.getFlaw());
         form.setHistory(npc.getHistory());
+        form.setCreationMethod(npc.getCreationMethod());
 
         return form;
     }
@@ -123,6 +126,7 @@ public class NpcFactory {
         npc.setBond(form.getBond());
         npc.setFlaw(form.getFlaw());
         npc.setHistory(form.getHistory());
+        npc.setCreationMethod(form.getCreationMethod());
 
         return npc;
     }

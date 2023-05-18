@@ -4,6 +4,7 @@ import com.npcvillagers.npcvillage.models.AppUser;
 import com.npcvillagers.npcvillage.models.Npc;
 import com.npcvillagers.npcvillage.models.NpcForm;
 import com.npcvillagers.npcvillage.models.Task;
+import com.npcvillagers.npcvillage.models.enums.CreationMethod;
 import com.npcvillagers.npcvillage.repos.AppUserRepository;
 import com.npcvillagers.npcvillage.repos.NpcRepository;
 import com.npcvillagers.npcvillage.repos.TaskRepository;
@@ -96,7 +97,6 @@ public class NpcController {
 
     @PostMapping("/create")
     public String createNpc(@ModelAttribute NpcForm npcForm,
-                            @RequestParam("creationMethod") String creationMethod,
                             HttpSession session,
                             RedirectAttributes redir,
                             Principal p,
@@ -106,11 +106,11 @@ public class NpcController {
             // The npcForm is added, but only handled after the eventual redirect to /create/{npcId}
             session.setAttribute("npcForm", npcForm);
 
-            if ("Manual".equals(creationMethod)) {
+            if (npc.getCreationMethod() == CreationMethod.MANUAL) {
                 npcRepository.save(npc);  // save the npc to the database
 
                 return "redirect:/create/" + npc.getId();  // redirect to the GET handler with the npc ID
-            } else if ("AI Assistant".equals(creationMethod)) {
+            } else if (npc.getCreationMethod() == CreationMethod.AI_ASSISTANT) {
 
                 Task task = taskService.createAndProcessTask(npc);
 

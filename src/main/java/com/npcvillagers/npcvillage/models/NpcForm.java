@@ -45,6 +45,7 @@ public class NpcForm {
 
     private String history = "Any";
 
+    private CreationMethod creationMethod = CreationMethod.MANUAL;
 
     // Constructor
     public NpcForm() {
@@ -222,6 +223,14 @@ public class NpcForm {
         this.history = history;
     }
 
+    public CreationMethod getCreationMethod() {
+        return creationMethod;
+    }
+
+    public void setCreationMethod(CreationMethod creationMethod) {
+        this.creationMethod = creationMethod;
+    }
+
     @Override
     public String toString() {
         return "NpcForm{" +
@@ -246,6 +255,7 @@ public class NpcForm {
                 ", bond='" + bond + '\'' +
                 ", flaw='" + flaw + '\'' +
                 ", history='" + history + '\'' +
+                ", creationMethod=" + creationMethod +
                 '}';
     }
 }

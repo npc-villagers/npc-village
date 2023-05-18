@@ -71,7 +71,7 @@
             <input type="text" id="customAge" name="customAge" th:value="${npcForm.customAge}">
         </div>
 
-        <label for="occupationCategory">Occupation</label>
+        <label for="occupationCategory">Occupation / Background</label>
         <select id="occupationCategory"  name="occupationCategory" required>
             <option th:each="occupationCategory : ${T(com.npcvillagers.npcvillage.models.enums.OccupationCategory).values()}"
                     th:value="${occupationCategory.name()}"
@@ -116,10 +116,11 @@
         <div id="create-submit-div">
             <label for="creationMethod">Creation Method</label>
             <select id="creationMethod" name="creationMethod" required>
-                <option value="Manual">Manual</option>
-                <option value="AI Assistant">AI Assistant</option>
+                <option th:each="creationMethod : ${T(com.npcvillagers.npcvillage.models.enums.CreationMethod).values()}"
+                        th:value="${creationMethod.name()}"
+                        th:text="${creationMethod.getDisplayName()}"
+                        th:selected="${creationMethod.name() == npcForm.creationMethod.name()}">Creation Method</option>
             </select>
-
             <input type="submit" th:value="${submitButtonText}" />
         </div>
     </form>
