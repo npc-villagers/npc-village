@@ -30,22 +30,31 @@
 </div>
 
 
-
 <div th:if="${!npcs.isEmpty()}" class="npcs-container">
-  <div th:each="npc : ${npcs}">
-    <div th:if="${npc != null}" th:replace="~{fragments/npcStatBlock :: npcStatBlock(${npc})}"></div>
+  <div class="accordion">
+    <div th:each="npc, iterStat : ${npcs}">
+      <div class="accordion-item">
+        <h2 class="accordion-header" th:id="'heading' + ${iterStat.index}">
+          <button th:text="${npc.name}" class="accordion-button" type="button" data-bs-toggle="collapse" th:data-bs-target="'#collapse' + ${iterStat.index}" aria-expanded="true" th:aria-controls="'collapse' + ${iterStat.index}"></button>
+        </h2>
+        <div th:id="'collapse' + ${iterStat.index}" class="accordion-collapse collapse" th:aria-labelledby="'heading' + ${iterStat.index}" data-bs-parent=".accordion">
+          <div class="accordion-body">
+            <!-- Content for the NPC goes here -->
+            <div th:if="${npc != null}" th:replace="~{fragments/npcStatBlock :: npcStatBlock(${npc})}"></div>
 
-    <form th:action="@{/myvillage/{npcId}(npcId=${npc.id})}" th:method="GET">
-      <input type="hidden" name="npcId" th:value="${npc.id}">
-<!--      <input type="submit" value="Edit">-->
-      <button class="btn btn-primary" type="submit">Edit</button>
-    </form>
+            <form th:action="@{/myvillage/{npcId}(npcId=${npc.id})}" th:method="GET">
+              <input type="hidden" name="npcId" th:value="${npc.id}">
+              <button class="btn btn-primary" type="submit">Edit</button>
+            </form>
 
-    <form th:action="@{/myvillage/{npcId}(npcId=${npc.id})}" method="POST">
-      <input type="hidden" name="_method" value="delete" />
-<!--      <input type="submit" value="Delete">-->
-      <button class="btn btn-danger" type="submit">Delete</button>
-    </form>
+            <form th:action="@{/myvillage/{npcId}(npcId=${npc.id})}" method="POST">
+              <input type="hidden" name="_method" value="delete" />
+              <button class="btn btn-danger" type="submit">Delete</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 <footer th:replace="~{fragments/footer-fragment :: footer}">

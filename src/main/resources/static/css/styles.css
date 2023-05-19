@@ -9,6 +9,18 @@ text-decoration: none;
 color: red;
 }
 
+
+#card-name {
+ font-family: "Roboto", serif;
+
+}
+
+.card-title  {
+ font-family:"fantasy";
+ font:bold;
+
+ }
+
 #danger {
 text-align: center;
 font-family: Roboto, Helvetica, sans-serif;
@@ -23,3 +35,4 @@ justify-content: center;
 align-items: center;
 font-family: Roboto, Helvetica, sans-serif;
 }
+
