@@ -145,10 +145,8 @@ public class AppUserController {
             AppUser user = appUserRepo.findByUsername(p.getName());
             m.addAttribute("user", user);
             m.addAttribute("username", user.getUsername());
-            return "ourteam";  // Return the view name
-
         }
-        return "redirect:/ourteam";
+        return "ourteam";
     }
 
 
