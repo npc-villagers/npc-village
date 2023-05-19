@@ -1,24 +1,94 @@
-body {
-background-color: black;
+main {
+    background-color: black;
 }
 
-main {
-display: flex;
-flex-direction: column;
-justify-content: center;
-align-items: center;
-}
+
 
 h1 {
-color: red;
-font-family: Roboto, Helvetica, sans-serif;
+display: flex;
+flex-direction: column;
+font-family: "Tiamat Condensed SC Regular", sans-serif;
+font-size: 48px;
+text-transform: uppercase;
+color: rgb(228, 7, 18);
+text-align: center;
+margin: 0;
+
+}
+.one {
+width: 20vw;
+height: 20vw;
+}
+.two {
+width: 20vw;
+height: 20vw;
+}
+.three {
+width: 20vw;
+height: 20vw;
+}
+.four {
+width: 20vw;
+height: 20vw;
 }
 
-#card-body-1 {
-display: flex;
+.card-title-1 {
+font-family: "Tiamat Condensed SC Regular", sans-serif;
+color: rgb(228, 7, 18);
+}
+.card-title-2 {
+font-family: "Tiamat Condensed SC Regular", sans-serif;
+color: rgb(228, 7, 18);
+}
+.card-title-3 {
+font-family: "Tiamat Condensed SC Regular", sans-serif;
+color: rgb(228, 7, 18);
+}
+.card-title-4 {
+font-family: "Tiamat Condensed SC Regular", sans-serif;
+color: rgb(228, 7, 18);
+}
+
+.card-text-1 {
+color: white;
+}
+.card-text-2 {
+color: white;
+}
+.card-text-3 {
+color: white;
+}
+.card-text-4 {
+color: white;
+}
+
+
+
+.card-body-1 {
+flex-direction: justify;
 justify-content: center;
-align-items: center;
 font-family: Roboto, Helvetica, sans-serif;
-height: 20vw;
-background-color: red;
+background-color: black;
+margin: 0;
+}
+.card-body-2 {
+flex-direction: justify;
+justify-content: center;
+font-family: Roboto, Helvetica, sans-serif;
+background-color: black;
+margin: 0;
+}
+.card-body-3 {
+flex-direction: justify;
+justify-content: center;
+font-family: Roboto, Helvetica, sans-serif;
+background-color: black;
+margin: 0;
+}
+.card-body-4 {
+flex-direction: justify;
+justify-content: center;
+font-family: Roboto, Helvetica, sans-serif;
+background-color: black;
+margin: 0;
 }

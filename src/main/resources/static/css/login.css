@@ -1,0 +1,44 @@
+body {
+    background-color: black;
+}
+
+main {
+background-color: black;
+height: 43vw;
+font-family: "Tiamat Condensed SC Regular", sans-serif;
+color: white
+}
+
+.login {
+font-family: "Tiamat Condensed SC Regular", sans-serif;
+font-size: 36px;
+color: rgb(228, 7, 18);
+}
+
+.signup {
+color: rgb(228, 7, 18);
+}
+
+.btn-create-account{
+background-color: rgb(228, 7, 18);
+color: white;
+font-family: Roboto, Helvetica, Arial, sans-serif;
+font-size: 16px;
+font-weight: 700;
+padding: 14px 30px;
+border: none;
+border-radius: 0;
+cursor: pointer;
+transition: background-color 0.25s ease;
+width: 280px;
+text-decoration: none;
+text-align: center;
+display: inline-block;
+width:240px;
+}
+
+.btn-create-account:hover {
+background-color: rgb(181, 6, 15);
+color: white;
+text-decoration: none;
+}
