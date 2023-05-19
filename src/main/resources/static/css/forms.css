@@ -17,6 +17,11 @@ h1::after {
     margin: 0 auto 10px auto;
 }
 
+.accordion {
+    width: 95%;
+    margin: auto;
+}
+
 .accordion-body {
     display: flex;
     flex-direction: column;
