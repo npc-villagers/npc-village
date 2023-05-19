@@ -42,23 +42,25 @@
             <!-- Content for the NPC goes here -->
             <div th:if="${npc != null}" th:replace="~{fragments/npcStatBlock :: npcStatBlock(${npc})}"></div>
 
-            <form th:action="@{/myvillage/{npcId}(npcId=${npc.id})}" th:method="GET">
-              <input type="hidden" name="npcId" th:value="${npc.id}">
-              <button class="btn btn-primary" type="submit">Edit</button>
-            </form>
+            <div id="edit-submit-div">
+              <form th:action="@{/myvillage/{npcId}(npcId=${npc.id})}" th:method="GET">
+                <input type="hidden" name="npcId" th:value="${npc.id}">
+                <button class="npc-cancel" type="submit">Edit</button>
+              </form>
 
-            <form th:action="@{/myvillage/{npcId}(npcId=${npc.id})}" method="POST">
-              <input type="hidden" name="_method" value="delete" />
-              <button class="btn btn-danger" type="submit">Delete</button>
-            </form>
+              <form th:action="@{/myvillage/{npcId}(npcId=${npc.id})}" method="POST">
+                <input type="hidden" name="_method" value="delete" />
+                <button class="npc-submit" type="submit">Delete</button>
+              </form>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
 </div>
-<footer th:replace="~{fragments/footer-fragment :: footer}">
-</footer>
+<!--<footer th:replace="~{fragments/footer-fragment :: footer}">-->
+<!--</footer>-->
 <script th:src="@{/webjars/bootstrap/5.1.0/js/bootstrap.min.js}"></script>
 <script th:src="@{/webjars/jquery/3.6.0/jquery.min.js}"></script>
 </body>

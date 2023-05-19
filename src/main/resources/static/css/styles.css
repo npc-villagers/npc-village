@@ -32,3 +32,40 @@ align-items: center;
 font-family: Roboto, Helvetica, sans-serif;
 }
 
+.npc-stat-block {
+    width: 75%;
+    margin: auto;
+}
+
+@media (min-width: 992px) { /* Adjust breakpoint as needed */
+    #navbarNav {
+        display: flex;
+        justify: space-between;
+    }
+}
+
+.add-to-village {
+    background-color: rgb(228, 7, 18);
+    color: white;
+    font-family: Roboto, Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    padding: 14px 30px;
+    border: none;
+    border-radius: 0;
+    cursor: pointer;
+    transition: background-color 0.25s ease;
+    width: 240px; /* width modified */
+    text-decoration: none;
+    text-align: center;
+    display: block;
+    margin: 20px auto 20px auto;
+}
+
+
+
+.add-to-village:hover {
+    background-color: rgb(181, 6, 15);
+    color: white;
+    text-decoration: none;
+}

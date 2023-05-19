@@ -119,6 +119,11 @@ input, textarea, select {
     margin: 20px 0 20px 0;
 }
 
+.edit-submit-div form {
+    display: inline-block; /* Or flex, as per your requirements */
+    width: auto; /* This will make the form as wide as its contents */
+}
+
 .form-control:focus, .form-select:focus {
   border-color: rgba(0,0,0,0.5);
   box-shadow: 0 0 5px rgba(0,0,0,0.5);
