@@ -45,8 +45,14 @@ h1::after {
 }
 
 .accordion-button:not(.collapsed) {
-  color: #FFF  !important;
-  background-color: rgb(228, 7, 18) !important;
+  color: black  !important;
+  background-color: #FFF !important;
+  border: 1px solid #d8dde3;
+}
+
+.accordion-button:not(.collapsed) {
+  color: black  !important;
+  background-color: #FFF !important;
   border: 1px solid #d8dde3;
 }
 
@@ -97,7 +103,15 @@ input, textarea, select {
     flex-direction: column;
     align-items: center; /* Add this to center content */
     gap: 1rem;
-    margin-top: 20px; /* Add this to create space above */
+    margin: 20px 0 20px 0;
+}
+
+#edit-submit-div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin: 20px 0 20px 0;
 }
 
 .form-control:focus, .form-select:focus {
@@ -105,7 +119,7 @@ input, textarea, select {
   box-shadow: 0 0 5px rgba(0,0,0,0.5);
 }
 
-.create-npc-submit {
+.npc-submit {
     background-color: rgb(228, 7, 18);
     color: white;
     font-family: Roboto, Helvetica, Arial, sans-serif;
@@ -122,8 +136,33 @@ input, textarea, select {
     display: inline-block;
 }
 
-.create-npc-submit:hover {
+
+
+.npc-submit:hover {
     background-color: rgb(181, 6, 15);
+    color: white;
+    text-decoration: none;
+}
+
+.npc-cancel {
+    background-color: rgb(19, 113, 231);
+    color: white;
+    font-family: Roboto, Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    padding: 14px 30px;
+    border: none;
+    border-radius: 0;
+    cursor: pointer;
+    transition: background-color 0.25s ease;
+    width: 240px; /* width modified */
+    text-decoration: none;
+    text-align: center;
+    display: inline-block;
+}
+
+.npc-cancel:hover {
+    background-color: rgb(39, 143, 251); /* Lighter shade of blue */
     color: white;
     text-decoration: none;
 }
