@@ -1,3 +1,14 @@
+body{
+display: flex;
+justify-content: center;
+align-items: center;
+}
+
 h1 {
-color: red
+font-family: "Tiamat Condensed SC Regular", sans-serif;
+color: rgb(228, 7, 18);
+}
+
+.error {
+color: white;
 }
