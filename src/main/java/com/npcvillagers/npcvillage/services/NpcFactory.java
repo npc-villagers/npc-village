@@ -251,7 +251,7 @@ public class NpcFactory {
     }
 
     // Define a temporary class in the factory that contains only the fields we want in our JSON formatted String given to ChatGPT as input
-    private class NpcJson {
+    protected class NpcJson {
         String name;
         String species;
         String subspecies;
@@ -294,4 +294,5 @@ public class NpcFactory {
             this.history = npc.getHistory();
         }
     }
+
 }
