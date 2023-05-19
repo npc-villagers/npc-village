@@ -1,25 +1,24 @@
-
-#navbarNav {
-display: flex;
-justify: space-between;
+body {
+background-color: black;
 }
 
-li {
-text-decoration: none;
-color: red;
-}
-
-#danger {
-text-align: center;
-font-family: Roboto, Helvetica, sans-serif;
-color: red;
-font-size: 34px;
-}
-
-#bio {
+main {
 display: flex;
 flex-direction: column;
 justify-content: center;
 align-items: center;
+}
+
+h1 {
+color: red;
 font-family: Roboto, Helvetica, sans-serif;
+}
+
+#card-body-1 {
+display: flex;
+justify-content: center;
+align-items: center;
+font-family: Roboto, Helvetica, sans-serif;
+height: 20vw;
+background-color: red;
 }
