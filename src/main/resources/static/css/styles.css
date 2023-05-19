@@ -1,0 +1,38 @@
+
+#navbarNav {
+display: flex;
+justify: space-between;
+}
+
+li {
+text-decoration: none;
+color: red;
+}
+
+
+#card-name {
+ font-family: "Roboto", serif;
+
+}
+
+.card-title  {
+ font-family:"fantasy";
+ font:bold;
+
+ }
+
+#danger {
+text-align: center;
+font-family: Roboto, Helvetica, sans-serif;
+color: red;
+font-size: 34px;
+}
+
+#bio {
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+font-family: Roboto, Helvetica, sans-serif;
+}
+

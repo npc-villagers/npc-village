@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>NPC Form</title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.1.0/css/bootstrap.min.css}" />
+</head>
+<body>
+<div th:fragment="npcForm">
+    <div class="container">
+        <form id="npcForm" th:action="${formAction}" th:method="${formMethod}" th:object="${npcForm}">
+            <div class="mb-3">
+                <label for="name" class="form-label">Name</label>
+                <input type="text" id="name" name="name" class="form-control" th:value="${npcForm.name}" required onclick="this.select();" onfocus="this.select();">
+            </div>
+            <div class="mb-3">
+                <label for="species" class="form-label">Species</label>
+                <select id="species" name="species" class="form-select" required>
+                    <option th:each="species : ${T(com.npcvillagers.npcvillage.models.enums.Species).values()}"
+                            th:if="${!species.name().startsWith('ANY')}"
+                            th:value="${species.name()}"
+                            th:text="${species.getDisplayName()}"
+                            th:selected="${species.name() == npcForm.species.name()}">Species</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="subspecies" class="form-label">Subspecies</label>
+                <select id="subspecies" name="subspecies" class="form-select" th:data-saved-value="${npcForm.subspecies}" data-filter-any="true" required>
+                    <!-- Subspecies options populated here by JavaScript -->
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="gender" class="form-label">Gender</label>
+                <select id="gender" name="gender" class="form-select" required>
+                    <option th:each="gender : ${T(com.npcvillagers.npcvillage.models.enums.Gender).values()}"
+                            th:if="${!gender.name().startsWith('ANY')}"
+                            th:value="${gender.name()}"
+                            th:text="${gender.getDisplayName()}"
+                            th:selected="${gender.name() == npcForm.gender.name()}">Gender</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="alignment" class="form-label">Alignment</label>
+                <select id="alignment" name="alignment" class="form-select" required>
+                    <option th:each="alignment : ${T(com.npcvillagers.npcvillage.models.enums.Alignment).values()}"
+                            th:if="${!alignment.name().startsWith('ANY')}"
+                            th:value="${alignment.name()}"
+                            th:text="${alignment.getDisplayName()}"
+                            th:selected="${alignment.name() == npcForm.alignment.name()}">Alignment</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="playerRelationship" class="form-label">Player Relationship</label>
+                <select id="playerRelationship" name="playerRelationship" class="form-select" required>
+                    <option th:each="playerRelationship : ${T(com.npcvillagers.npcvillage.models.enums.PlayerRelationship).values()}"
+                            th:if="${!playerRelationship.name().startsWith('ANY')}"
+                            th:value="${playerRelationship.name()}"
+                            th:text="${playerRelationship.getDisplayName()}"
+                            th:selected="${playerRelationship.name() == npcForm.playerRelationship.name()}">Player Relationship</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="campaignStyle" class="form-label">Campaign Style</label>
+                <select id="campaignStyle" name="campaignStyle" class="form-select" required>
+                    <option th:each="campaignStyle : ${T(com.npcvillagers.npcvillage.models.enums.CampaignStyle).values()}"
+                            th:if="${!campaignStyle.name().startsWith('ANY')}"
+                            th:value="${campaignStyle.name()}"
+                            th:text="${campaignStyle.getDisplayName()}"
+                            th:selected="${campaignStyle.name() == npcForm.campaignStyle.name()}">Campaign Style</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="voice" class="form-label">Voice</label>
+                <input type="text" id="voice" name="voice" class="form-control" th:value="${npcForm.voice}" required>
+            </div>
+            <div class="mb-3">
+                <label for="ageCategory" class="form-label">Age</label>
+                <select id="ageCategory" name="ageCategory" class="form-select" required>
+                    <option th:each="ageCategory : ${T(com.npcvillagers.npcvillage.models.enums.AgeCategory).values()}"
+                            th:if="${!ageCategory.name().startsWith('ANY')}"
+                            th:value="${ageCategory.name()}"
+                            th:text="${ageCategory.getDisplayName()}"
+                            th:selected="${ageCategory.name() == npcForm.ageCategory.name()}">Age</option>
+                </select>
+            </div>
+            <div id="customAgeDiv" style="display: none;">
+                <label for="customAge" class="form-label">Custom Age</label>
+                <input type="text" id="customAge" name="customAge" class="form-control" th:value="${npcForm.customAge}">
+            </div>
+            <div class="mb-3">
+                <label for="occupationCategory" class="form-label">Occupation</label>
+                <select id="occupationCategory" name="occupationCategory" class="form-select" required>
+                    <option th:each="occupationCategory : ${T(com.npcvillagers.npcvillage.models.enums.OccupationCategory).values()}"
+                            th:if="${!occupationCategory.name().startsWith('ANY')}"
+                            th:value="${occupationCategory.name()}"
+                            th:text="${occupationCategory.getDisplayName()}"
+                            th:selected="${occupationCategory.name() == npcForm.occupationCategory.name()}">Occupation</option>
+                </select>
+            </div>
+            <div id="customOccupationDiv" style="display: none;">
+                <label for="customOccupation" class="form-label">Custom Occupation</label>
+                <input type="text" id="customOccupation" name="customOccupation" class="form-control" th:value="${npcForm.customOccupation}">
+            </div>
+            <div class="mb-3">
+                <label for="characterClass" class="form-label">Character Class</label>
+                <select id="characterClass" name="characterClass" class="form-select" required>
+                    <option th:each="characterClass : ${T(com.npcvillagers.npcvillage.models.enums.CharacterClass).values()}"
+                            th:if="${!characterClass.name().startsWith('ANY')}"
+                            th:value="${characterClass.name()}"
+                            th:text="${characterClass.getDisplayName()}"
+                            th:selected="${characterClass.name() == npcForm.characterClass.name()}">Character Class</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="appearance" class="form-label">Appearance</label>
+                <input type="text" id="appearance" name="appearance" class="form-control" th:value="${npcForm.appearance}" required>
+            </div>
+            <div class="mb-3">
+                <label for="personality" class="form-label">Personality</label>
+                <input type="text" id="personality" name="personality" class="form-control" th:value="${npcForm.personality}" required>
+            </div>
+            <div class="mb-3">
+                <label for="motivation" class="form-label">Motivation</label>
+                <input type="text" id="motivation" name="motivation" class="form-control" th:value="${npcForm.motivation}" required>
+            </div>
+            <div class="mb-3">
+                <label for="ideal" class="form-label">Ideal</label>
+                <input type="text" id="ideal" name="ideal" class="form-control" th:value="${npcForm.ideal}" required>
+            </div>
+            <div class="mb-3">
+                <label for="bond" class="form-label">Bond</label>
+                <input type="text" id="bond" name="bond" class="form-control" th:value="${npcForm.bond}" required>
+            </div>
+            <div class="mb-3">
+                <label for="flaw" class="form-label">Flaw</label>
+                <input type="text" id="flaw" name="flaw" class="form-control" th:value="${npcForm.flaw}" required>
+            </div>
+            <div class="mb-3">
+                <label for="history" class="form-label">History</label>
+                <input type="text" id="history" name="history" class="form-control" th:value="${npcForm.history}" required>
+            </div>
+            <div class="mb-3">
+                <input type="submit" class="btn btn-primary" th:value="${submitButtonText}" />
+            </div>
+            <div class="mb-3">
+                <input type="submit" class="btn btn-secondary" th:value="${cancelButtonText}"/>
+            </div>
+
+        </form>
+    </div>
+  
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script th:src="@{/js/npcForm.js}"></script>
+</div>
+</body>
+</html>
+

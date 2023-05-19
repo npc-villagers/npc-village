@@ -1,0 +1,31 @@
+[
+  {
+    "name": "Any",
+    "species": "Aasimar",
+    "subSpecies": "n/a",
+    "gender": "Female",
+    "alignment": "Lawful Good",
+    "age": "Adult. Generate age in years.",
+    "voice": "Any",
+    "occupation": "Adventurer",
+    "characterClass" : "Paladin",
+    "campaignStyle": "High Fantasy",
+    "themes": [
+      "magic",
+      "wonder",
+      "heroism",
+      "adventure",
+      "mythical creatures",
+      "epic battles",
+      "destiny"
+    ],
+    "playerRelationship": "Mentor",
+    "appearance": "She should carry a greatsword",
+    "personality": "Any",
+    "motivation": "Any",
+    "ideal": "Any",
+    "bond": "Any",
+    "flaw": "Any",
+    "history": "Sunny is the half celestial daughter of a human man and a deva woman in the service of Pelor. She came to Haldrim to become a hero as decreed by her mother, Aranareth. She is very close to her mother, and speaks with her often, though there is not always a response. She was given Toot, a hollyphant, as a companion when she stopped a demon invasion of the Northlands."
+  }
+]

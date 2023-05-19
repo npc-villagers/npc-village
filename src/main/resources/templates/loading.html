@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Loading...</title>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="/js/task.js" th:attr="data-taskId=${taskId}"></script>
+  <link rel="stylesheet" type="text/css" href="/css/loading.css" />
+</head>
+<body>
+<h1>Please Wait</h1>
+<img src="/images/gelatinous-cube.gif" alt="D&D GIF">
+<p id="loadingPhrase"></p>
+</footer>
+</body>
+</html>
