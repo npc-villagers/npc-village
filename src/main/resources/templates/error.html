@@ -2,11 +2,13 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
   <meta charset="UTF-8">
-  <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.1.0/css/bootstrap.min.css}" />
-  <title>Title</title>
+  <link rel="stylesheet" th:href="@{/css/styles.css}">
+<!--  <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.1.0/css/bootstrap.min.css}" />-->
+  <title>Error</title>
 </head>
 <body>
-<h1>I AM ERROR</h1>
+<h1><Danger>Oops! Looks like you rolled a natural 1!</Danger></h1>
+<h2>Error</h2>
 <span th:text="${message}"></span>
 <img src="https://media0.giphy.com/media/l0ExsgrTuACbtPaqQ/giphy.gif?cid=6c09b9525c20dc1fc880ed3503de9a460755e14545db5023&ep=v1_internal_gifs_gifId&rid=giphy.gif&ct=g" alt="Error Picture">
 <footer th:replace="~{fragments/footer-fragment :: footer}">
