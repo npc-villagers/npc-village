@@ -88,5 +88,5 @@ window.addEventListener('load', function() {
 document.getElementById('species').addEventListener('change', function() {
     loadSubspecies(this.value);
 });
-document.getElementById('age').addEventListener('change', toggleCustomAge);
-document.getElementById('occupation').addEventListener('change', toggleCustomOccupation);
+document.getElementById('ageCategory').addEventListener('change', toggleCustomAge);
+document.getElementById('occupationCategory').addEventListener('change', toggleCustomOccupation);

@@ -247,6 +247,10 @@ public class NpcFactory {
             throw new IllegalArgumentException("Failed to update NPC using ChatGPT: " + e.getMessage());
         }
 
+        // We also have to specifically update the ageCategory and to be "CUSTOM", because ChatGPT will return an age in years, which is custom and not a grouping, in case the user wants to edit it later.
+        npcToUpdate.setAgeCategory(AgeCategory.CUSTOM);
+        npcToUpdate.setCustomAge(npcToUpdate.getAge());
+
         return npcToUpdate;
     }
 
