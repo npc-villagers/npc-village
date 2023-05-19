@@ -1,6 +1,6 @@
 # npc-village
 
-**Version**: 0.0.0
+**Version**: 1.0
 
 ## Overview
 
@@ -37,10 +37,11 @@ This is a web application using Spring MVC and Thymeleaf that utilizes the OpenA
 - Spring Security
 - PostgreSQL
 - [OpenAI API](https://platform.openai.com/)
+- [Azure Content Manager](https://platform.openai.com/docs/introduction)
 
 ## Change Log
 
-2023-05-18T20:00-08:00 - v1.0 (Placeholder)
+2023-05-19T20:00-12:00 - v1.0
 
 ## Credit and Collaborations
 
@@ -48,6 +49,5 @@ This is a web application using Spring MVC and Thymeleaf that utilizes the OpenA
 
 - Alex Carr
 - Dasha Burgos
-- Davey Oswald
 - Matt Austin
 - Ryan Apodaca
