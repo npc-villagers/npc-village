@@ -1,4 +1,12 @@
+body {
+    background-color: black;
+}
+
 main {
+display: flex;
+flex-direction: column;
+justify-content: flex-start;
+align-items: center;
 background-color: black;
 height: 43vw;
 font-family: "Tiamat Condensed SC Regular", sans-serif;
@@ -36,9 +44,7 @@ font-size: 60px;
 color: rgb(228, 7, 18);
 text-transform: uppercase;
 align-text: center;
-padding-left: 760px;
-padding-bottom: 50px;
-padding-top: 40px;
+
 }
 
 .button {
