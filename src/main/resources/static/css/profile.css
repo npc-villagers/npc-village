@@ -1,0 +1,73 @@
+main {
+background-color: black;
+height: 43vw;
+font-family: "Tiamat Condensed SC Regular", sans-serif;
+color: white
+}
+
+.profile-info {
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+font-family: "Tiamat Condensed SC Regular", sans-serif;
+font-size: 18px;
+
+letter-spacing: 4px;
+margin-bottom: 10px;
+}
+
+.username {
+font-family: "Tiamat Condensed SC Regular", sans-serif;
+font-size: 25px;
+}
+.firstname {
+font-family: "Tiamat Condensed SC Regular", sans-serif;
+font-size: 25px;
+}
+.lastname {
+font-family: "Tiamat Condensed SC Regular", sans-serif;
+font-size: 25px;
+}
+
+h1 {
+font-family: "Tiamat Condensed SC Regular", sans-serif;
+font-size: 60px;
+color: rgb(228, 7, 18);
+text-transform: uppercase;
+align-text: center;
+padding-left: 760px;
+padding-bottom: 50px;
+padding-top: 40px;
+}
+
+.button {
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+}
+
+.btn-delete-account{
+background-color: rgb(228, 7, 18);
+color: white;
+font-family: Roboto, Helvetica, Arial, sans-serif;
+font-size: 16px;
+font-weight: 700;
+padding: 14px 30px;
+border: none;
+border-radius: 0;
+cursor: pointer;
+transition: background-color 0.25s ease;
+width: 280px;
+text-decoration: none;
+text-align: center;
+display: inline-block;
+width:240px;
+}
+
+.btn-delete-account:hover {
+background-color: rgb(181, 6, 15);
+color: white;
+text-decoration: none;
+}
