@@ -4,36 +4,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Profile</title>
-<!--    <link rel="stylesheet" th:href="@{/css/styles.css}">-->
+    <link rel="stylesheet" th:href="@{/css/profile.css}">
     <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.1.0/css/bootstrap.min.css}" />
-
+    <link href="//db.onlinewebfonts.com/c/e3e794f35cf6e4475f17d8f7a91df0a5?family=Tiamat+Condensed+SC+Regular" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <header>
     <nav th:replace="fragments/nav-header :: navbar"></nav>
 </header>
 <div th:replace="/fragments/error-fragment :: applicationUser-error"></div>
+<main>
 <h1>My Profile</h1>
 
 <div class="profile-info">
-    <img src="https://via.placeholder.com/150" alt="Profile Picture">
-    <p><strong>Username:</strong> <span th:text="${username}"></span></p>
-    <p><strong>First Name:</strong> <span th:text="${firstName}"></span></p>
-    <p><strong>Last Name:</strong> <span th:text="${lastName}"></span></p>
+    <p><strong class="username">Username:</strong> <span th:text="${username}"></span></p>
+    <p><strong class="firstname">First Name:</strong> <span th:text="${firstName}"></span></p>
+    <p><strong class="lastname">Last Name:</strong> <span th:text="${lastName}"></span></p>
 </div>
 <div class="vertical-gap-2"></div>
-<!--<h2>User's Posts</h2>-->
-<!--<article th:each="post : ${user.posts}">-->
-<!--    <p class="date" th:text="${post.createdAt}"></p>-->
-<!--    <div class="postcontent-container">-->
-<!--        <p th:text="${post.body}"></p>-->
-<!--    </div>-->
+<div class="button">
 <form th:action="${'/profile/' + id}" th:method="DELETE">
 
         <!--  use th:if to make sure the delete button is only visible on a user's own profile -->
-    <input th:if="${username.equals(username)}" type="submit" value="Delete My Profile">
+    <input th:if="${username.equals(username)}" type="submit" class="btn-delete-account" value="Delete My Profile">
 
 </form>
+</div>
+</main>
 <footer th:replace="~{fragments/footer-fragment :: footer}">
 </footer>
 <script th:src="@{/webjars/bootstrap/5.1.0/js/bootstrap.min.js}"></script>
